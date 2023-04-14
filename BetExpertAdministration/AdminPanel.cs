@@ -1,8 +1,5 @@
 ﻿using Domain;
 using Entites;
-using System.Configuration;
-using System.Security.Policy;
-
 namespace BetExpertAdministration
 {
     public partial class AdminPanel : Form
@@ -40,6 +37,7 @@ namespace BetExpertAdministration
             }catch(Exception ex) {
                 MessageBox.Show(ex.Message, "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            //allCompetitions_Click(sender, e);
         }
 
         private void allCompetitions_Click(object sender, EventArgs e)
@@ -65,7 +63,7 @@ namespace BetExpertAdministration
         {
             try
             {
-                adminService.RemoveCompetition(Competitions.FocusedItem);
+                adminService.RemoveCompetition(Convert.ToInt32(Competitions.SelectedItems[0].SubItems[0].Text));
             }catch(NullReferenceException)
             {
                 MessageBox.Show("Select competition to remove!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -113,7 +111,7 @@ namespace BetExpertAdministration
         {
             try
             {
-                adminService.RemoveMatch(Matches.FocusedItem.StateImageIndex);
+                adminService.RemoveMatch(Convert.ToInt32(Matches.SelectedItems[0].SubItems[0].Text));
             }
             catch (NullReferenceException)
             {

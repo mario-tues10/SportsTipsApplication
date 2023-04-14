@@ -4,44 +4,65 @@ namespace Domain
 {
     public class LogHandler
     {
-        public  List<Admin> Admins { get; private set; }
+        public List<User> Users { get; private set; }
         public LogHandler()
         {
             try
             {
-                Admins = new List<Admin>(GetData.AllAdmins());
+                Users = new List<User>(GetData.AllUsers());
             }
-            catch(ArgumentNullException) 
-            { 
-                Admins = new List<Admin>();
+            catch (ArgumentNullException)
+            {
+                Users = new List<User>();
             }
         }
-        public void Register(string username, string email, string password)
+        public void Register(string username, string email, string password, string role, string? specialty)
         {
-            if (IsPresentUser(username, password))
+            if (IsPresentUser(username, email, password))
             {
-                throw new Exception("There is already an admin with that credentials!");
+                throw new Exception("There is already an user with that credentials!");
             }
             else
             {
-                Admin admin = new Admin(username, email, password);
-                InsertService.InsertIntoAdmin(admin);
+                switch (role)
+                {
+                    case "user":
+                        {
+                            User user = new User(username, email, password);
+                            InsertService.InsertIntoUser(user);
+                            break;
+                        }
+                    case "tipster":
+                        {
+                            Tipster tipster = new Tipster(username, email, password, Enum.Parse<Sport>(specialty));
+                            InsertService.InsertIntoTipster(tipster);
+                            break;
+                        }
+                    case "admin":
+                        {
+                            Admin admin = new Admin(username, email, password);
+                            InsertService.InsertIntoAdmin(admin);
+                            break;
+                        }
+                    default: break;
+                }
+
             }
         }
-        private bool IsPresentUser(string username, string password)
+        private bool IsPresentUser(string username, string email, string password)
         {
-            foreach (User admin in Admins)
+            foreach (User user in Users)
             {
-                if (admin.Username == username && admin.Password == password)
+                if (user.Username == username && user.Email == email && user.Password == password)
                 {
                     return true;
                 }
             }
             return false;
         }
-        public bool Login(string username, string password)
+        public bool Login(string username, string email, string password)
         {
-            return IsPresentUser(username, password);
+            return IsPresentUser(username, email, password);
         }
 
     }

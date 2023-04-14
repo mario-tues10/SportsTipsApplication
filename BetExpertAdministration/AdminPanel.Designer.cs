@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.Administration = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.deleteCompetition = new System.Windows.Forms.Button();
             this.allCompetitions = new System.Windows.Forms.Button();
@@ -69,24 +69,24 @@
             this.label8 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.tabControl1.SuspendLayout();
+            this.Administration.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.competition.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabControl1
+            // Administration
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Location = new System.Drawing.Point(12, 58);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(939, 435);
-            this.tabControl1.TabIndex = 0;
+            this.Administration.Controls.Add(this.tabPage1);
+            this.Administration.Controls.Add(this.tabPage2);
+            this.Administration.Controls.Add(this.tabPage3);
+            this.Administration.Controls.Add(this.tabPage4);
+            this.Administration.Location = new System.Drawing.Point(12, 58);
+            this.Administration.Name = "Administration";
+            this.Administration.SelectedIndex = 0;
+            this.Administration.Size = new System.Drawing.Size(939, 435);
+            this.Administration.TabIndex = 0;
             // 
             // tabPage1
             // 
@@ -458,10 +458,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(963, 524);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.Administration);
             this.Name = "AdminPanel";
             this.Text = "AdminPanel";
-            this.tabControl1.ResumeLayout(false);
+            this.Administration.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.competition.ResumeLayout(false);
             this.competition.PerformLayout();
@@ -474,7 +474,7 @@
 
         #endregion
 
-        private TabControl tabControl1;
+        private TabControl Administration;
         private TabPage tabPage1;
         private TabPage tabPage2;
         private TabPage tabPage3;

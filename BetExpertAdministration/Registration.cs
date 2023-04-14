@@ -16,7 +16,7 @@ namespace BetExpertAdministration
         {
             try
             {
-                AdminHandler.Register(username.Text, email.Text, password.Text);
+                AdminHandler.Register(username.Text, email.Text, password.Text, "admin", null);
                 Login login = new Login();
                 login.Show();
                 this.Hide();

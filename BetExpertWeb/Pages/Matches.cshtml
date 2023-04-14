@@ -1,0 +1,24 @@
+﻿@page
+@model BetExpertWeb.Pages.MatchesModel
+@{
+    ViewData["Title"] = "Matches";
+}
+<head>
+    <link rel="stylesheet" href="~/css/sports.css" asp-append-version="true" />
+</head>
+<h2>Available matches</h2>
+<body>
+    <div class="matches">
+
+        @foreach (var match in Model.Matches)
+        {
+            @if(match.StartTime > DateTime.Now)
+            {
+                <form method="get" action="Predictions">
+                    <input type="hidden" name="matchId" value=@match.GetId()/>
+                    <button type="submit" value="@match.GetId()">@match.FirstCompetitor Vs  @match.SecondCompetitor</button>
+                </form>
+            }
+        }
+    </div>
+</body>

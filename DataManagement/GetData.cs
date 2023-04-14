@@ -1,5 +1,6 @@
 ﻿using Entites;
 using System.Data.SqlClient;
+
 namespace DataManagement
 {
     public class GetData
@@ -114,6 +115,42 @@ namespace DataManagement
                 {
                     string query = $"select * from [Match]";
                     SqlCommand sqlCommand = new SqlCommand(query);
+                    SqlDataReader? reader = SqlService.ReadFromTable(sqlCommand, sqlConnection); ;
+                    List<Match>? result = new List<Match>();
+                    try
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                int id = reader.GetInt32(0);
+                                string firstCompetitor = reader.GetString(1);
+                                string secondCompetitor = reader.GetString(2);
+                                DateTime startTime = reader.GetDateTime(3);
+                                int competition_id = reader.GetInt32(4);
+                                Match match = new Match(firstCompetitor, secondCompetitor, startTime, competition_id);
+                                match.SetId(id);
+                                result.Add(match);
+                            }
+                        }
+                        return result;
+
+                    }
+                    catch (NullReferenceException)
+                    {
+                        return null;
+                    }
+                }
+            }
+        }
+        public static List<Match>? AllCompetitionMatches(int competitionId)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+            {
+                {
+                    string query = $"select * from [Match] where competition_id = @Id";
+                    SqlCommand sqlCommand = new SqlCommand(query);
+                    sqlCommand.Parameters.AddWithValue("@Id", competitionId);
                     SqlDataReader? reader = SqlService.ReadFromTable(sqlCommand, sqlConnection); ;
                     List<Match>? result = new List<Match>();
                     try

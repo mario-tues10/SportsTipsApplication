@@ -63,7 +63,6 @@ namespace Domain
             Competitions.Add(newCompetition);
             
         }
-        
         public void RemoveCompetition(int id)
         {
             Competition? competition = GetData.FindCompetitionById(id);
@@ -74,7 +73,8 @@ namespace Domain
             else
             {
                 DeleteService.DeleteFromCompetition(competition);
-                Competitions.Remove(competition);
+                Competitions.RemoveAll(dcompetition => dcompetition.GetId() == id);
+                Matches.RemoveAll(cmatch => cmatch.CompetitionId == id);
             }
             
         }
@@ -106,7 +106,7 @@ namespace Domain
             else
             {
                 DeleteService.DeleteFromMatch(match);
-                Matches.Remove(match);
+                Matches.RemoveAll(dmatch => dmatch.GetId() == id);
             }
         }
         /*

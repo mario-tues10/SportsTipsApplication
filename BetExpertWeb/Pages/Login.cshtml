@@ -1,0 +1,35 @@
+﻿@page
+@model BetExpertWeb.Pages.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+<h2>Log a user</h2>
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Login.Username"></label>
+        <input asp-for="Login.Username" class="form-control" />
+        <span asp-validation-for="Login.Username" class="text-danger"></span>
+    </div>
+    <br>
+    <div class="form-group">
+        <label asp-for="Login.Email"></label>
+        <input asp-for="Login.Email" class="form-control" />
+        <span asp-validation-for="Login.Email" class="text-danger"></span>
+    </div>
+    <br>
+    <div class="form-group">
+        <label asp-for="Login.Password"></label>
+        <input asp-for="Login.Password" class="form-control" />
+        <span asp-validation-for="Login.Password" class="text-danger"></span>
+    </div>
+    <br>
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
+        <label class="form-check-label" for="remember"><a href="#">Remember me</a></label>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Login</button>
+    <br>
+    @ViewData["ErrorMessage"]
+</form>

@@ -14,7 +14,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetExpertWeb", "..\BetExper
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataManagement", "..\DataManagement\DataManagement.csproj", "{256D3888-1638-40BC-8D62-08D939D66DE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entites", "..\Entites\Entites.csproj", "{5EEDC43D-F5E4-4552-8568-B0BF003C4AF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entites", "..\Entites\Entites.csproj", "{5EEDC43D-F5E4-4552-8568-B0BF003C4AF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
