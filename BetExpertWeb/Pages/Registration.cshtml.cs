@@ -2,15 +2,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BetExpertWeb.Models;
 using Domain;
+using Entites;
+
 namespace BetExpertWeb.Pages
 {
     public class RegistrationModel : PageModel
     {
         [BindProperty]
         public RegisterViewModel Register { get; set; }
+        private LogHandler LogHandler { get; set; }
+        public RegistrationModel()
+        {
+            LogHandler = new LogHandler();
+        }
         public void OnGet()
         {
-
         }
         public IActionResult OnPost()
         {
@@ -18,14 +24,13 @@ namespace BetExpertWeb.Pages
             {
                 try
                 {
-                    LogHandler logHandler = new LogHandler();
-                    if (Register.isTipster)
-                    {
-                        logHandler.Register(Register.Username, Register.Email, Register.Password, "tipster", "football");
+                    if (Register.TipsterSpecialty.Equals("User"))
+                    { 
+                        LogHandler.Register(Register.Username, Register.Email, Register.Password, UserRole.Client, null);
                     }
                     else
                     {
-                        logHandler.Register(Register.Username, Register.Email, Register.Password, "user", null);
+                        LogHandler.Register(Register.Username, Register.Email, Register.Password, UserRole.Tipster, Register.TipsterSpecialty);
                     }
                 }
                 catch (Exception ex)
@@ -33,7 +38,7 @@ namespace BetExpertWeb.Pages
                     ViewData["Error message"] = ex.Message;
                     return Page();
                 }
-                return RedirectToPage("Login");
+                return new RedirectToPageResult("Login");
             }
             else
             {

@@ -8,7 +8,6 @@ namespace BetExpertWeb.Models
 
         [Required(ErrorMessage = "Please enter your e-mail address.")]
         [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email Address")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Pleasem enter password.")]
@@ -18,8 +17,7 @@ namespace BetExpertWeb.Models
         [Required]
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        [Display(Name = "Confirm the password")]
         public string ConfirmPassword { get; set; }
-        public bool isTipster { get; set; }
+        public string TipsterSpecialty { get; set; }
     }
 }

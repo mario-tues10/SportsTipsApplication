@@ -39,6 +39,41 @@ namespace DataManagement
                 }
             }
         }
+        public static List<Competition>? TipsterSpecialtyCompetitions(string specialtySport)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+            {
+                string query = $"select * from [Competition] where sport = @Sport";
+                SqlCommand sqlCommand = new SqlCommand(query);
+                sqlCommand.Parameters.AddWithValue("@Sport", specialtySport);
+                SqlDataReader? reader = SqlService.ReadFromTable(sqlCommand, sqlConnection);
+                List<Competition>? result = new List<Competition>();
+                try
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            int id = reader.GetInt32(0);
+                            string name = reader.GetString(1);
+                            Sport sport = Enum.Parse<Sport>(reader.GetString(2));
+                            DateTime startDate = reader.GetDateTime(3);
+                            DateTime endDate = reader.GetDateTime(4);
+                            Competition competition = new Competition(name, sport, startDate, endDate);
+                            competition.SetId(id);
+                            result.Add(competition);
+                        }
+
+                    }
+                    return result;
+
+                }
+                catch (NullReferenceException)
+                {
+                    return null;
+                }
+            }
+        }
         public static List<Prediction>? AllTipsterPredictions(int tipsterId)
         {
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
@@ -197,7 +232,8 @@ namespace DataManagement
                             string username = reader.GetString(1);
                             string email = reader.GetString(2);
                             string password = reader.GetString(3);
-                            Admin admin = new Admin(username, email, password);
+                            UserRole userRole = Enum.Parse<UserRole>(reader.GetString(4));
+                            Admin admin = new Admin(username, email, password, userRole);
                             admin.SetId(id);
                             result.Add(admin);
                         }
@@ -228,9 +264,11 @@ namespace DataManagement
                             string username = reader.GetString(1);
                             string email = reader.GetString(2);
                             string password = reader.GetString(3);
-                            Sport specialty = Enum.Parse<Sport>(reader.GetString(4));
-                            decimal successRate = reader.GetDecimal(5);
-                            Tipster tipster = new Tipster(username, email, password, specialty, successRate);
+                            UserRole userRole = Enum.Parse<UserRole>(reader.GetString(4));
+                            Sport specialty = Enum.Parse<Sport>(reader.GetString(6));
+                            decimal successRate = reader.GetDecimal(7);
+                            bool suspended = Convert.ToBoolean(reader.GetByte(8));
+                            Tipster tipster = new Tipster(username, email, password, userRole, specialty, successRate, suspended);
                             tipster.SetId(id);
                         }
                     }
@@ -260,7 +298,8 @@ namespace DataManagement
                             string username = reader.GetString(1);
                             string email = reader.GetString(2);
                             string password = reader.GetString(3);
-                            User user = new User(username, email, password);
+                            UserRole userRole = Enum.Parse<UserRole>(reader.GetString(4));
+                            User user = new User(username, email, password, userRole);
                             user.SetId(id);
                             result.Add(user);
                         }
@@ -344,7 +383,8 @@ namespace DataManagement
                 Tipster? tipster = null;
                 try
                 {
-                    string query = $"select * from [Tispter] where id = @Id";
+                    string query = $"select * from [User] inner join [Tipster] on [User].id = [Tipster].tipster_id" +
+                        $" where id = @Id";
                     SqlCommand sqlCommand = new SqlCommand(query);
                     sqlCommand.Parameters.AddWithValue("@Id", id);
                     SqlDataReader? reader = SqlService.ReadFromTable(sqlCommand, sqlConnection);
@@ -355,9 +395,11 @@ namespace DataManagement
                             string username = reader.GetString(1);
                             string email = reader.GetString(2);
                             string password = reader.GetString(3);
-                            Sport specialty = Enum.Parse<Sport>(reader.GetString(4));
-                            decimal successRate = reader.GetDecimal(5);
-                            tipster = new Tipster(username, email, password, specialty, successRate);
+                            UserRole userRole = Enum.Parse<UserRole>(reader.GetString(4));
+                            Sport specialty = Enum.Parse<Sport>(reader.GetString(6));
+                            decimal successRate = reader.GetDecimal(7);
+                            bool suspended = Convert.ToBoolean(reader.GetByte(8));
+                            tipster = new Tipster(username, email, password, userRole, specialty, successRate, suspended);
                             tipster.SetId(id);
                         }
                     }
@@ -388,7 +430,8 @@ namespace DataManagement
                             string username = reader.GetString(1);
                             string email = reader.GetString(2);
                             string password = reader.GetString(3);
-                            user = new User(username, email, password);
+                            UserRole userRole = Enum.Parse<UserRole>(reader.GetString(4));
+                            user = new User(username, email, password, userRole);
                             user.SetId(id);
                         }
                     }

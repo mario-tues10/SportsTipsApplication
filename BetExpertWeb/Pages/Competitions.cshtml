@@ -5,61 +5,89 @@
     ViewData["Title"] = "Sports";
 }
 <head>
-    <link rel="stylesheet" href="~/css/sports.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/sports.css" asp-append-version="true" />
 </head>
 <body>
     <h2>Competitions</h2>
-    <div id="container">
-        <div id="first">
-            <div class="grid-container">
-                <div class="grid-item">
-                    <p class="sport_btn">FOOTBALL</p>
-                    <ul class="football_competitions">
-                        @foreach (var competition in Model.Competitions)
-                        {
-                            @if (competition.CompetitionSport.ToString().ToLower().Equals("football"))
+    @if (User.IsInRole("User"))
+    {
+        <div id="container">
+            <div id="first">
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <p class="sport_btn">FOOTBALL</p>
+                        <ul class="football_competitions">
+                            @foreach (var competition in Model.Competitions)
                             {
-                                <form method="get" action="Matches">
-                                    <input type="hidden" name="competitionId" value=@competition.GetId()/>
-                                    <button type="submit" value="@competition.GetId()">@competition.Name</button>
-                                </form>
+                                @if (competition.CompetitionSport.ToString().ToLower().Equals("football"))
+                                {
+                                    <form method="get" action="Matches">
+                                        <input type="hidden" name="competitionId" value=@competition.GetId() />
+                                        <button type="submit" value="@competition.GetId()">@competition.Name</button>
+                                    </form>
+                                }
                             }
-                        }
-                    </ul>
-                </div>
-                <br>
-                <div class="grid-item">
-                    <p class="sport_btn">TENNIS</p>
-                    <ul class="tennis_competitions">
-                        @foreach (var competition in Model.Competitions)
-                        {
-                            @if (competition.CompetitionSport.ToString().ToLower().Equals("tennis"))
+                        </ul>
+                    </div>
+                    <br>
+                    <div class="grid-item">
+                        <p class="sport_btn">TENNIS</p>
+                        <ul class="tennis_competitions">
+                            @foreach (var competition in Model.Competitions)
                             {
-                                <form method="get" action="Matches">
-                                    <input type="hidden" name="competitionId" value=@competition.GetId() />
-                                    <button type="submit">@competition.Name</button>
-                                </form>
+                                @if (competition.CompetitionSport.ToString().ToLower().Equals("tennis"))
+                                {
+                                    <form method="get" action="Matches">
+                                        <input type="hidden" name="competitionId" value=@competition.GetId() />
+                                        <button type="submit">@competition.Name</button>
+                                    </form>
+                                }
                             }
-                        }
-                    </ul>
-                </div>
-                <br>
-                <div class="grid-item">
-                    <p class="sport_btn">BASKETBALL</p>
-                    <ul class="basketball_competitions">
-                        @foreach (var competition in Model.Competitions)
-                        {
-                            @if (competition.CompetitionSport.ToString().ToLower().Equals("basketball"))
+                        </ul>
+                    </div>
+                    <br>
+                    <div class="grid-item">
+                        <ul class="tipster_competitions">
+                            @foreach (var competition in Model.Competitions)
                             {
-                                <form method="get" action="Matches">
-                                    <input type="hidden" name="competitionId" value=@competition.GetId() />
-                                    <button type="submit" value="@competition.GetId()">@competition.Name</button>
-                                </form>
+                                @if (competition.CompetitionSport.ToString().ToLower().Equals("basketball"))
+                                {
+                                    <form method="get" action="Matches">
+                                        <input type="hidden" name="competitionId" value=@competition.GetId() />
+                                        <button type="submit" value="@competition.GetId()">@competition.Name</button>
+                                    </form>
+                                }
                             }
-                        }
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
+    else
+    {
+        <div id="container">
+            <div id="first">
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <ul class="basketball_competitions">
+                            @foreach (var competition in Model.Competitions)
+                            {
+                                <form method="get" action="Matches">
+                                    <input type="hidden" name="competitionId" value=@competition.GetId() />
+                                    <button type="submit" value="@competition.GetId()">@competition.Name</button>
+                                </form>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (Model.Competitions == null)
+    {
+        <div class="error-message">
+            There are no competitions for now!
+        </div>
+    }
 </body>

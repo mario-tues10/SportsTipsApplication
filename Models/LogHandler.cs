@@ -16,51 +16,52 @@ namespace Domain
                 Users = new List<User>();
             }
         }
-        public void Register(string username, string email, string password, string role, string? specialty)
+        public void Register(string username, string email, string password, UserRole userRole, string? specialty)
         {
-            if (IsPresentUser(username, email, password))
+            if (IsPresentUser(username, email, password) != null)
             {
                 throw new Exception("There is already an user with that credentials!");
             }
             else
             {
-                switch (role)
+                switch (userRole)
                 {
-                    case "user":
+                    case UserRole.Client:
                         {
-                            User user = new User(username, email, password);
+                            User user = new User(username, email, password, userRole);
                             InsertService.InsertIntoUser(user);
                             break;
                         }
-                    case "tipster":
+                    case UserRole.Tipster:
                         {
-                            Tipster tipster = new Tipster(username, email, password, Enum.Parse<Sport>(specialty));
+                            Tipster tipster = new Tipster(username, email, password, userRole, Enum.Parse<Sport>(specialty));
                             InsertService.InsertIntoTipster(tipster);
                             break;
                         }
-                    case "admin":
+                    case UserRole.Admin:
                         {
-                            Admin admin = new Admin(username, email, password);
+                            Admin admin = new Admin(username, email, password, userRole);
                             InsertService.InsertIntoAdmin(admin);
                             break;
                         }
-                    default: break;
+                    default: throw new Exception("An error occurred in inserting!");
+                   
                 }
 
             }
         }
-        private bool IsPresentUser(string username, string email, string password)
+        private User? IsPresentUser(string username, string email, string password)
         {
             foreach (User user in Users)
             {
                 if (user.Username == username && user.Email == email && user.Password == password)
                 {
-                    return true;
+                    return user;
                 }
             }
-            return false;
+            return null;
         }
-        public bool Login(string username, string email, string password)
+        public User? Login(string username, string email, string password)
         {
             return IsPresentUser(username, email, password);
         }

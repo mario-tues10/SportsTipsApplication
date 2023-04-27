@@ -5,6 +5,27 @@
     background-attachment: fixed;
     background-position: center;
 }
-h2, h4{
+
+h2, h4 {
     text-align: center;
+}
+
+select {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 200px;
+    height: 30px;
+    background-color: #fff;
+    color: #333;
+}
+
+select:hover {
+    border-color: #999;
+}
+
+select:focus {
+    outline: none;
+    border-color: #666;
 }

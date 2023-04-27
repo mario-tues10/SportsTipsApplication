@@ -9,14 +9,13 @@
 <h2>Available matches</h2>
 <body>
     <div class="matches">
-
         @foreach (var match in Model.Matches)
         {
-            @if(match.StartTime > DateTime.Now)
+            @if (match.StartTime > DateTime.Now)
             {
                 <form method="get" action="Predictions">
-                    <input type="hidden" name="matchId" value=@match.GetId()/>
-                    <button type="submit" value="@match.GetId()">@match.FirstCompetitor Vs  @match.SecondCompetitor</button>
+                    <input type="hidden" name="matchId" value=@match.GetId() />
+                    <button type="submit" value="@match.GetId()">@match.FirstCompetitor Vs @match.SecondCompetitor</button>
                 </form>
             }
         }

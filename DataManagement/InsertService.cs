@@ -6,12 +6,13 @@ namespace DataManagement
     {
         public static void InsertIntoUser(User user)
         {
-            string query = $"insert into [User](username, email, password) values(@Username, " +
-                $"@Email, @Password); Select Scope_Identity();";
+            string query = $"insert into [User](username, email, password, role) values(@Username, " +
+                $"@Email, @Password, @UserRole); Select Scope_Identity();";
             SqlCommand cmd = new SqlCommand(query);
             cmd.Parameters.AddWithValue("@Username", user.Username);
             cmd.Parameters.AddWithValue("@Email", user.Email);
             cmd.Parameters.AddWithValue("@Password", user.Password);
+            cmd.Parameters.AddWithValue("@UserRole", user.UserRole.ToString());
             int res = SqlService.InsertIntoTable(cmd);
             user.SetId(res);
         }

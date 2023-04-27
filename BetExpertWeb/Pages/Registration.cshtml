@@ -3,42 +3,45 @@
 @{
     ViewData["Title"] = "Registration";
 }
-
 <h2>Register a new user</h2>
 <form method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
-        <label asp-for="Register.Username"></label>
+        <label asp-for="Register.Username">Username:</label>
         <input asp-for="Register.Username" class="form-control" />
         <span asp-validation-for="Register.Username" class="text-danger"></span>
     </div>
     <br>
     <div class="form-group">
-        <label asp-for="Register.Email"></label>
+        <label asp-for="Register.Email">Email:</label>
         <input asp-for="Register.Email" class="form-control" />
         <span asp-validation-for="Register.Email" class="text-danger"></span>
     </div>
     <br>
     <div class="form-group">
-        <label asp-for="Register.Password"></label>
+        <label asp-for="Register.Password">Password:</label>
         <input asp-for="Register.Password" class="form-control" />
         <span asp-validation-for="Register.Password" class="text-danger"></span>
     </div>
     <br>
     <div class="form-group">
-        <label asp-for="Register.ConfirmPassword"></label>
+        <label asp-for="Register.ConfirmPassword">Confirm password:</label>
         <input asp-for="Register.ConfirmPassword" class="form-control" />
         <span asp-validation-for="Register.ConfirmPassword" class="text-danger"></span>
     </div>
     <br>
-    <div class="form-group form-check">
-        <input type="checkbox" class="form-check-input" id="tipster" name="isTipster">
-        <label class="form-check-label" for="terms"><a href="#">Football Tipster</a></label>
-        <input type="checkbox" class="form-check-input" id="tipster" name="isTipster">
-        <label class="form-check-label" for="terms"><a href="#">Tennis Tipster</a></label>
-        <input type="checkbox" class="form-check-input" id="tipster" name="isTipster">
-        <label class="form-check-label" for="terms"><a href="#">Basketball Tipster</a></label>
+    <div class="form-group">
+        <label asp-for="Register.TipsterSpecialty">Tipster specialty:</label>
+        <select class="form-select" asp-for="Register.TipsterSpecialty">
+            <option value="User" selected>None</option>
+            <option value="Football">Football</option>
+            <option value="Tennis">Tennis</option>
+            <option value="Basketball">Basketball</option>
+        </select>
     </div>
     <br>
     <button type="submit" class="btn btn-primary">Register</button>
 </form>
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

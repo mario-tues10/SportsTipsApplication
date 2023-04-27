@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Entites
+﻿namespace Entites
 {
     public class User
     {
@@ -8,11 +6,13 @@ namespace Entites
         public string Username { get; private set; }
         public string Email { get; private set; }
         public string Password { get; private set; }
-        public User(string username, string email, string password)
+        public UserRole UserRole { get; private set; }
+        public User(string username, string email, string password, UserRole userRole)
         {
             Username = username;
             Email = email;
             Password = password;
+            UserRole = userRole;
         }
         public int GetId()
         {

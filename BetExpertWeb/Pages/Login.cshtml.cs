@@ -2,10 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BetExpertWeb.Models;
 using Domain;
+using Entites;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
-
+using Microsoft.AspNetCore.Authorization;
 namespace BetExpertWeb.Pages
 {
     public class LoginModel : PageModel
@@ -14,28 +15,29 @@ namespace BetExpertWeb.Pages
 
         [BindProperty]
         public LoginViewModel Login { get; set; }
+        private LogHandler LogHandler;
+
+        public LoginModel()
+        {
+            LogHandler = new LogHandler();
+        }
         public void OnGet()
         {
-            #region retrieve info from cookie
             if (Request.Cookies.ContainsKey(RememberMeCookieName))
             {
-                Login = new LoginViewModel();
-                Login.Username = Request.Cookies[RememberMeCookieName];
                 Login.RememberMe = true;
+                RedirectToPage("Competitions");
             }
-            #endregion
         }
-
         public IActionResult OnPost()
         {
             if (ModelState.IsValid)
             {
-                #region handle info for user
                 if (Login.RememberMe)
                 {
                     CookieOptions cookieOptions = new CookieOptions();
                     cookieOptions.Expires = DateTime.Now.AddDays(4);
-                    Response.Cookies.Append(RememberMeCookieName, Login.Email, cookieOptions);
+                    Response.Cookies.Append(RememberMeCookieName, Login.Username, cookieOptions);
                 }
                 else
                 {
@@ -44,33 +46,30 @@ namespace BetExpertWeb.Pages
                         Response.Cookies.Delete(RememberMeCookieName);
                     }
                 }
-                #endregion
-
-                LogHandler logHandler = new LogHandler();
                 try 
                 {
-                    
-                    if(logHandler.Login(Login.Username, Login.Email, Login.Password))
+                    LogHandler LogHandler = new LogHandler();
+                    User? LoggedIn = LogHandler.Login(Login.Username, Login.Email, Login.Password);
+                    if (LoggedIn != null)
                     {
-                        List<Claim> claims = new List<Claim>();
-                        claims.Add(new Claim(ClaimTypes.Name, Login.Username));
+                        List<Claim> claims = new List<Claim>
+                        {
+                            new Claim("id", LoggedIn.GetId().ToString(), ClaimValueTypes.Integer32),
+                            new Claim(ClaimTypes.Role, LoggedIn.UserRole.ToString())
+                        };
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                         HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity));
-
                         return new RedirectToPageResult("Competitions");
                     }
                     else
                     {
-                        ViewData["ErrorMessage"] = "Unable to login.";
-                        return Page();
+                        ViewData["ErrorMessage"] = "Unable to login!";
                     }
 
-                }catch(Exception)
+                }catch(Exception ex)
                 {
-                    ViewData["ErrorMessage"] = "Exception occured.";
-                    return Page();
+                    ViewData["ErrorMessage"] = ex.Message;
                 }
-
             }
             return Page();
         }
