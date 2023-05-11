@@ -69,6 +69,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.loggedUser = new System.Windows.Forms.Label();
             this.Administration.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.competition.SuspendLayout();
@@ -453,11 +454,21 @@
             this.tabPage4.Text = "Client";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // loggedUser
+            // 
+            this.loggedUser.AutoSize = true;
+            this.loggedUser.Location = new System.Drawing.Point(16, 20);
+            this.loggedUser.Name = "loggedUser";
+            this.loggedUser.Size = new System.Drawing.Size(50, 20);
+            this.loggedUser.TabIndex = 1;
+            this.loggedUser.Text = "label7";
+            // 
             // AdminPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(963, 524);
+            this.Controls.Add(this.loggedUser);
             this.Controls.Add(this.Administration);
             this.Name = "AdminPanel";
             this.Text = "AdminPanel";
@@ -469,6 +480,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -515,5 +527,6 @@
         private Label label5;
         private ComboBox assignCompetition;
         private DateTimePicker startTime;
+        private Label loggedUser;
     }
 }

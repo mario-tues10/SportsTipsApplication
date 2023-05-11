@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
 namespace BetExpertWeb.Models
 {
     public class LoginViewModel
@@ -14,7 +13,6 @@ namespace BetExpertWeb.Models
         [Required(ErrorMessage = "Please enter your password.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-
         public bool RememberMe { get; set; }
     }
 }

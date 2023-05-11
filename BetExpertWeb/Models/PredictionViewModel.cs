@@ -4,7 +4,11 @@ namespace BetExpertWeb.Models
 {
     public class PredictionViewModel
     {
+
+        [Required(ErrorMessage = "Error in home team.")]
         public string HomeTeam { get; set; }
+
+        [Required(ErrorMessage = "Error in away team.")]
         public string AwayTeam { get; set; }
         [Required(ErrorMessage = "Please enter your analyze.")]
         [MaxLength(500, ErrorMessage = "Your analysis is too long.")]

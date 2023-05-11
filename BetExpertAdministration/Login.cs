@@ -1,18 +1,19 @@
-﻿using Domain;
+﻿using DataManagement;
+using Domain;
 namespace BetExpertAdministration
 {
     public partial class Login : Form
     {
-        LogHandler AdminHadler;
+        AuthenticationHandler logHadler;
         public Login()
         {
-            AdminHadler = new LogHandler();
             InitializeComponent();
+            logHadler = new AuthenticationHandler();
         }
 
         private void blogin_Click(object sender, EventArgs e)
         {
-            if(AdminHadler.Login(username.Text, password.Text)) {
+            if(logHadler.Login(username.Text, email.Text,  password.Text, new AdminRepository(new SqlService())) != null) {
                 AdminPanel adminPanel = new AdminPanel();
                 adminPanel.Show();
                 this.Hide();

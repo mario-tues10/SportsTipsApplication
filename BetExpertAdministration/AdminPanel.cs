@@ -1,43 +1,53 @@
-﻿using Domain;
-using Entites;
+﻿using DataManagement.Interfaces;
+using DataManagement.Entities;
+using DataManagement;
 namespace BetExpertAdministration
 {
     public partial class AdminPanel : Form
-    { 
-    
-        AdminService adminService;
-
+    {
+        private readonly ICompetitionRepository competitionRepository;
+        private readonly IMatchRepository matchRepository;
         public AdminPanel()
         {
             InitializeComponent();
-            adminService = new AdminService();
+            competitionRepository = new CompetitionRepository(new SqlService());
+            matchRepository = new MatchRepository(new SqlService());
             assignCompetition.Click += new EventHandler(OnAssingningCompetitions);
         }
-        
+
         private void OnAssingningCompetitions(object sender, EventArgs e)
         {
             assignCompetition.Items.Clear();
-            foreach (Competition competition in adminService.Competitions)
+            try
             {
-                assignCompetition.DisplayMember = competition.Name;
-                assignCompetition.ValueMember = competition.GetId().ToString();
-                assignCompetition.Items.Add(competition.Name);
+                foreach (Competition competition in competitionRepository.GetAllCompetitions())
+                {
+                    assignCompetition.DisplayMember = competition.Name;
+                    assignCompetition.ValueMember = competition.GetId().ToString();
+                    assignCompetition.Items.Add(competition.Name);
+                }
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("There are no competitions!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void createCompetition_Click(object sender, EventArgs e)
         {
             try
             {
-                adminService.AddCompetition(name.Text, Enum.Parse<Sport>(sport.SelectedItem.ToString()),
+                Competition competition = new Competition(name.Text, Enum.Parse<Sport>(sport.SelectedItem.ToString()),
                     startDate.Value, endDate.Value);
+                competitionRepository.InsertIntoCompetition(competition);
             }
-            catch(NullReferenceException)
+            catch (NullReferenceException)
             {
                 MessageBox.Show("You have not selected correct data!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }catch(Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 MessageBox.Show(ex.Message, "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            //allCompetitions_Click(sender, e);
         }
 
         private void allCompetitions_Click(object sender, EventArgs e)
@@ -45,10 +55,10 @@ namespace BetExpertAdministration
             Competitions.Items.Clear();
             try
             {
-                List<Competition>? competitions = adminService.AllCompetitions();
-                foreach(Competition competition in competitions)
+                List<Competition>? competitions = competitionRepository.GetAllCompetitions();
+                foreach (Competition competition in competitions)
                 {
-                    string[] row = { competition.Name, competition.CompetitionSport.ToString(), 
+                    string[] row = { competition.Name, competition.CompetitionSport.ToString(),
                         competition.StartDate.ToShortDateString(), competition.EndDate.ToShortDateString()};
                     Competitions.Items.Add(competition.GetId().ToString()).SubItems.AddRange(row);
                 }
@@ -63,26 +73,36 @@ namespace BetExpertAdministration
         {
             try
             {
-                adminService.RemoveCompetition(Convert.ToInt32(Competitions.SelectedItems[0].SubItems[0].Text));
-            }catch(NullReferenceException)
+                Competition competition = new Competition(Competitions.SelectedItems[0].SubItems[1].Text,
+                    Enum.Parse<Sport>(Competitions.SelectedItems[0].SubItems[2].Text),
+                    DateTime.Parse(Competitions.SelectedItems[0].SubItems[3].Text),
+                    DateTime.Parse(Competitions.SelectedItems[0].SubItems[4].Text));
+                competition.SetId(Convert.ToInt32(Competitions.SelectedItems[0].SubItems[0].Text));
+                competitionRepository.DeleteIntoCompetition(competition);
+            }
+            catch (NullReferenceException)
             {
                 MessageBox.Show("Select competition to remove!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        
+
         private void createMatch_Click(object sender, EventArgs e)
         {
             try
             {
-                adminService.AddMatch(firstCompetitor.Text, secondCompetitor.Text, startTime.Value,  
+                Match match = new Match(firstCompetitor.Text, secondCompetitor.Text, startTime.Value,
                     Convert.ToInt32(assignCompetition.ValueMember));
-            }catch(NullReferenceException)
+                matchRepository.InsertIntoMatch(match);
+            }
+            catch (NullReferenceException)
             {
                 MessageBox.Show("You have not entered correct data!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -93,7 +113,7 @@ namespace BetExpertAdministration
             Matches.Items.Clear();
             try
             {
-                List<Match>? matches = adminService.AllMatches();
+                List<Match>? matches = matchRepository.GetAllMatches();
                 foreach (Match match in matches)
                 {
                     string[] row = { match.FirstCompetitor, match.SecondCompetitor,
@@ -105,13 +125,17 @@ namespace BetExpertAdministration
             {
                 MessageBox.Show("There are no matches yet!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
 
+        }
         private void deleteMatch_Click(object sender, EventArgs e)
         {
             try
             {
-                adminService.RemoveMatch(Convert.ToInt32(Matches.SelectedItems[0].SubItems[0].Text));
+                Match match = new Match(Matches.SelectedItems[0].SubItems[1].Text,
+                    Matches.SelectedItems[0].SubItems[2].Text,
+                    DateTime.Parse(Matches.SelectedItems[0].SubItems[3].Text),
+                    Convert.ToInt32(Matches.SelectedItems[0].SubItems[4].Text));
+                matchRepository.DeleteIntoMatch(match);
             }
             catch (NullReferenceException)
             {

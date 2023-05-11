@@ -1,22 +1,23 @@
+using DataManagement;
+using DataManagement.Entities;
 using Domain;
-using Entites;
-
 namespace BetExpertAdministration
 {
     public partial class Registration : Form
     {
-        LogHandler AdminHandler;
+        private AuthenticationHandler registerHandler;
         public Registration()
         {
-            AdminHandler = new LogHandler();
             InitializeComponent();
+            registerHandler = new AuthenticationHandler();
         }
 
         private void register_Click(object sender, EventArgs e)
         {
             try
             {
-                AdminHandler.Register(username.Text, email.Text, password.Text, UserRole.Admin, null);
+                registerHandler.Register(username.Text, email.Text, password.Text, 
+                    UserRole.Admin, null, new AdminRepository(new SqlService()));
                 Login login = new Login();
                 login.Show();
                 this.Hide();

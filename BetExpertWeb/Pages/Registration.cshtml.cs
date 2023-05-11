@@ -2,18 +2,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BetExpertWeb.Models;
 using Domain;
-using Entites;
-
+using DataManagement;
+using DataManagement.Entities;
 namespace BetExpertWeb.Pages
 {
     public class RegistrationModel : PageModel
     {
         [BindProperty]
         public RegisterViewModel Register { get; set; }
-        private LogHandler LogHandler { get; set; }
+        private AuthenticationHandler registerHandler { get; set; }
         public RegistrationModel()
         {
-            LogHandler = new LogHandler();
+            registerHandler = new AuthenticationHandler();
         }
         public void OnGet()
         {
@@ -26,11 +26,13 @@ namespace BetExpertWeb.Pages
                 {
                     if (Register.TipsterSpecialty.Equals("User"))
                     { 
-                        LogHandler.Register(Register.Username, Register.Email, Register.Password, UserRole.Client, null);
+                        registerHandler.Register(Register.Username, Register.Email, Register.Password, 
+                            UserRole.Client, null, new UserRepository(new SqlService()));
                     }
                     else
                     {
-                        LogHandler.Register(Register.Username, Register.Email, Register.Password, UserRole.Tipster, Register.TipsterSpecialty);
+                        registerHandler.Register(Register.Username, Register.Email, Register.Password, 
+                            UserRole.Tipster, Register.TipsterSpecialty, new TipsterRepository(new SqlService()));
                     }
                 }
                 catch (Exception ex)

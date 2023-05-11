@@ -2,24 +2,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BetExpertWeb.Models;
 using Domain;
-using Entites;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+using DataManagement.Entities;
+using DataManagement;
+
 namespace BetExpertWeb.Pages
 {
     public class LoginModel : PageModel
     {
         private const string RememberMeCookieName = "Data";
-
         [BindProperty]
         public LoginViewModel Login { get; set; }
-        private LogHandler LogHandler;
+        private AuthenticationHandler logHandler;
+        private WebViewHandler viewHandler;
 
         public LoginModel()
         {
-            LogHandler = new LogHandler();
+            logHandler = new AuthenticationHandler();
+            viewHandler = new WebViewHandler();
         }
         public void OnGet()
         {
@@ -48,13 +50,14 @@ namespace BetExpertWeb.Pages
                 }
                 try 
                 {
-                    LogHandler LogHandler = new LogHandler();
-                    User? LoggedIn = LogHandler.Login(Login.Username, Login.Email, Login.Password);
+                    User? LoggedIn = logHandler.Login(Login.Username, Login.Email, 
+                        Login.Password, new UserRepository(new SqlService()));
+                    if() { }
                     if (LoggedIn != null)
                     {
                         List<Claim> claims = new List<Claim>
                         {
-                            new Claim("id", LoggedIn.GetId().ToString(), ClaimValueTypes.Integer32),
+                            new Claim("id", LoggedIn.GetId().ToString()),
                             new Claim(ClaimTypes.Role, LoggedIn.UserRole.ToString())
                         };
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

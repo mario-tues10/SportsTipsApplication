@@ -10,10 +10,10 @@ namespace BetExpertWeb.Pages
     public class MatchesModel : PageModel
     {
         public List<Match>? Matches { get; set; }
-        private WebHelper WebHelper;
+        private WebService WebHelper;
         public MatchesModel()
         {
-            WebHelper = new WebHelper();
+            WebHelper = new WebService();
         }
         public void OnGet(int competitionId)
         {
