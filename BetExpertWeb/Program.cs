@@ -1,13 +1,10 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {
     options.LoginPath = new PathString("/Registration/Login");
-    options.AccessDeniedPath = new PathString("/Registration/AccessDenied");
 }
 );
 builder.Services.AddDistributedMemoryCache();
@@ -17,11 +14,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-
 var app = builder.Build();
-
-
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

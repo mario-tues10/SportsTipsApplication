@@ -1,10 +1,16 @@
-﻿using System.Data.SqlClient;
+﻿using DataManagement.Interfaces;
+using System.Data.SqlClient;
 namespace DataManagement
 {
-    public class SqlService
+    public class SqlService : ISqlService
     {
         public readonly string connectionString = "Server = mssqlstud.fhict.local; Database=dbi502277;" +
             "User Id = dbi502277; Password=logaritam25;";
+
+        public SqlConnection CreateConnection()
+        {
+            return new SqlConnection(connectionString);
+        }
         public int InsertIntoTable(SqlCommand sqlCommand)
         {
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))

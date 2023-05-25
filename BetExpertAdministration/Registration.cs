@@ -5,23 +5,24 @@ namespace BetExpertAdministration
 {
     public partial class Registration : Form
     {
-        private AuthenticationHandler registerHandler;
+        private AuthenticationHandler authenticationHandler;
         public Registration()
         {
             InitializeComponent();
-            registerHandler = new AuthenticationHandler();
+            authenticationHandler = new AuthenticationHandler(new AdminRepository());
         }
 
         private void register_Click(object sender, EventArgs e)
         {
             try
             {
-                registerHandler.Register(username.Text, email.Text, password.Text, 
-                    UserRole.Admin, null, new AdminRepository(new SqlService()));
+                authenticationHandler.Register(username.Text, email.Text, password.Text, UserRole.Admin);
                 Login login = new Login();
                 login.Show();
                 this.Hide();
-            }catch(Exception ex) {
+            }
+            catch(Exception ex) 
+            {
                 MessageBox.Show(ex.Message, "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

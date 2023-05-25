@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Login";
 }
-@ViewData["ErrorMessage"];
+@ViewData["ErrorMessage"]
 <h2>Log a user</h2>
 <form method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
@@ -23,11 +23,6 @@
         <label asp-for="Login.Password">Password:</label>
         <input asp-for="Login.Password" class="form-control" />
         <span asp-validation-for="Login.Password" class="text-danger"></span>
-    </div>
-    <br>
-    <div class="form-group form-check">
-        <input type="checkbox" class="form-check-input" name="rememberMe">
-        <label class="form-check-label" for="remember">Remember me</label>
     </div>
     <br>
     <button type="submit" class="btn btn-primary">Login</button>

@@ -1,0 +1,43 @@
+﻿@page
+@model BetExpertWeb.Pages.PredictionsCreationModel
+@{
+    ViewData["Title"] = "Sports Prediction Form";
+}
+<head>
+    <link rel="stylesheet" href="~/css/predictions.css" asp-append-version="true" />
+</head>
+<h1>@ViewData["Title"]</h1>
+@if (Model.IsSubmitted)
+{
+    <div class="alert alert-success">
+        <p>Your prediction has been submitted. Thank you!</p>
+    </div>
+}
+else
+{
+    <form method="post">
+        <div class="form-group">
+            <label for="homeTeam">Home Team:</label>
+            <input type="text" id="homeTeam" name="HomeTeam" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="awayTeam">Away Team:</label>
+            <input type="text" id="awayTeam" name="AwayTeam" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="analysis">Analysis:</label>
+            <textarea id="analysis" name="Analysis" class="form-control" rows="5" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="finalPrediction">Final Prediction:</label>
+            <textarea id="finalPrediction" name="FinalPrediction" class="form-control" rows="5" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit Prediction</button>
+    </form>
+}
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

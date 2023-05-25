@@ -4,16 +4,12 @@ namespace BetExpertWeb.Models
 {
     public class PredictionViewModel
     {
-
-        [Required(ErrorMessage = "Error in home team.")]
-        public string HomeTeam { get; set; }
-
-        [Required(ErrorMessage = "Error in away team.")]
-        public string AwayTeam { get; set; }
-        [Required(ErrorMessage = "Please enter your analyze.")]
+        [Required(ErrorMessage = "No tipster username")]
+        public string TipsterUsername { get; set; }
+        [Required(ErrorMessage = "No tipster analysis.")]
         [MaxLength(500, ErrorMessage = "Your analysis is too long.")]
         public string Analysis { get; set; }
-        [Required(ErrorMessage = "Please enter your final prediction.")]
+        [Required(ErrorMessage = "No tipster final prediction.")]
         [MaxLength(50, ErrorMessage = "Your final prediction is too long.")]
         public string FinalPrediction { get; set; }
     }

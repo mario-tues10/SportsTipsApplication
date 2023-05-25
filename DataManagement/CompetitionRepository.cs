@@ -5,10 +5,10 @@ namespace DataManagement
 {
     public class CompetitionRepository : ICompetitionRepository
     {
-        public readonly SqlService sqlService;
-        public CompetitionRepository(SqlService sqlService)
+        private readonly SqlService sqlService;
+        public CompetitionRepository()
         {
-            this.sqlService = sqlService;
+            this.sqlService = new SqlService();
         }
         public void InsertIntoCompetition(Competition competition)
         {
@@ -33,7 +33,7 @@ namespace DataManagement
         public Competition? GetCompetitionById(int id)
         {
             Competition? competition = null;
-            using (SqlConnection sqlConnection = new SqlConnection(sqlService.connectionString))
+            using (SqlConnection sqlConnection = sqlService.CreateConnection())
             {
                 try
                 {
@@ -64,7 +64,7 @@ namespace DataManagement
         public List<Competition>? GetAllCompetitions()
         {
             List<Competition>? result = new List<Competition>();
-            using (SqlConnection sqlConnection = new SqlConnection(sqlService.connectionString))
+            using (SqlConnection sqlConnection = sqlService.CreateConnection())
             {
                 string query = $"select * from [Competition]";
                 SqlCommand sqlCommand = new SqlCommand(query);
@@ -95,50 +95,15 @@ namespace DataManagement
             }
             return result;
         }
-        public List<Match>? GetCompetitionMatches(Competition competition)
+        /*
+        public List<Competition>? GetTipsterCompetitions(Tipster tipster)
         {
-            List<Match>? result = new List<Match>();
-            using (SqlConnection sqlConnection = new SqlConnection(sqlService.connectionString))
-            {
-                string query = $"select * from [Match] where competition_id = @Id";
-                SqlCommand sqlCommand = new SqlCommand(query);
-                sqlCommand.Parameters.AddWithValue("@Id", competition.GetId());
-                SqlDataReader? reader = sqlService.ReadFromTable(sqlCommand, sqlConnection);
-                try
-                {
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            int id = reader.GetInt32(0);
-                            string firstCompetitior = reader.GetString(1);
-                            string secondCompetitior = reader.GetString(2);
-                            DateTime startTime = reader.GetDateTime(3);
-                            Match match = new Match(firstCompetitior, secondCompetitior, startTime, competition.GetId());
-                            match.SetId(id);
-                            result.Add(match);
-                        }
-
-                    }
-
-                }
-                catch (NullReferenceException)
-                {
-                    return null;
-                }
-            }
-            return result;
-
-        }
-        public List<Competition>? GetTipsterCompetitions(IUserRepository userRepository, int tipsterId)
-        {
-            Tipster? tipster = (Tipster?)userRepository.GetAccountById(tipsterId);
             List<Competition>? result = new List<Competition>();
-            using (SqlConnection sqlConnection = new SqlConnection(sqlService.connectionString))
+            using (SqlConnection sqlConnection = sqlService.CreateConnection())
             {
                 string query = $"select * from [Competition] where sport = @Sport";
                 SqlCommand sqlCommand = new SqlCommand(query);
-                sqlCommand.Parameters.AddWithValue("@Sport", tipster.Specialty);
+                sqlCommand.Parameters.AddWithValue("@Sport", tipster.Specialty.ToString());
                 SqlDataReader? reader = sqlService.ReadFromTable(sqlCommand, sqlConnection);
                 try
                 {
@@ -167,5 +132,6 @@ namespace DataManagement
             return result;
 
         }
+        */
     }
 }

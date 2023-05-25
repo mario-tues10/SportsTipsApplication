@@ -3,14 +3,14 @@ namespace BetExpertWeb.Models
 {
     public class RegisterViewModel
     {
-        [Required(ErrorMessage = "Please enter your username.")]
+        [Required(ErrorMessage = "Please enter your username!")]
         public string Username { get; set; }
 
-        [Required(ErrorMessage = "Please enter your e-mail address.")]
+        [Required(ErrorMessage = "Please enter your e-mail address!")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Pleasem enter password.")]
+        [Required(ErrorMessage = "Pleasem enter password!")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
@@ -18,6 +18,8 @@ namespace BetExpertWeb.Models
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-        public string TipsterSpecialty { get; set; }
+        [Required(ErrorMessage = "Choose your type of account!")]
+        
+        public string RegistrationType { get; set; }
     }
 }

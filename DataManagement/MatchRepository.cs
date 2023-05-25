@@ -1,14 +1,14 @@
-﻿using DataManagement.Interfaces;
-using DataManagement.Entities;
+﻿using DataManagement.Entities;
+using DataManagement.Interfaces;
 using System.Data.SqlClient;
 namespace DataManagement
 {
     public class MatchRepository : IMatchRepository
     {
-        public readonly SqlService sqlService;
-        public MatchRepository(SqlService sqlService)
+        private readonly SqlService sqlService;
+        public MatchRepository()
         {
-            this.sqlService = sqlService;
+            this.sqlService = new SqlService();
         }
         public void InsertIntoMatch(Match match)
         {
@@ -33,7 +33,7 @@ namespace DataManagement
         public Match? GetMatchById(int id)
         {
             Match? match = null;
-            using (SqlConnection sqlConnection = new SqlConnection(sqlService.connectionString))
+            using (SqlConnection sqlConnection = sqlService.CreateConnection())
             {
                 try
                 {
@@ -64,9 +64,9 @@ namespace DataManagement
         public List<Match>? GetAllMatches()
         {
             List<Match>? result = new List<Match>();
-            using (SqlConnection sqlConnection = new SqlConnection(sqlService.connectionString))
+            using (SqlConnection sqlConnection = sqlService.CreateConnection())
             {
-                string query = $"select * from [Competition]";
+                string query = $"select * from [Match]";
                 SqlCommand sqlCommand = new SqlCommand(query);
                 SqlDataReader? reader = sqlService.ReadFromTable(sqlCommand, sqlConnection);
                 try
@@ -95,14 +95,14 @@ namespace DataManagement
             }
             return result;
         }
-        public List<Prediction>? GetMatchPredictions(Match match)
+        public List<Match>? GetCompetitionMatches(Competition competition)
         {
-            List<Prediction>? result = new List<Prediction>();
-            using (SqlConnection sqlConnection = new SqlConnection(sqlService.connectionString))
+            List<Match>? result = new List<Match>();
+            using (SqlConnection sqlConnection = sqlService.CreateConnection())
             {
-                string query = $"select * from [Prediction] where match_id = @Id";
+                string query = $"select * from [Match] where competition_id = @Id";
                 SqlCommand sqlCommand = new SqlCommand(query);
-                sqlCommand.Parameters.AddWithValue("@Id", match.GetId());
+                sqlCommand.Parameters.AddWithValue("@Id", competition.GetId());
                 SqlDataReader? reader = sqlService.ReadFromTable(sqlCommand, sqlConnection);
                 try
                 {
@@ -111,13 +111,12 @@ namespace DataManagement
                         while (reader.Read())
                         {
                             int id = reader.GetInt32(0);
-                            string analyze = reader.GetString(1);
-                            string finalPrediction = reader.GetString(2);
-                            int matchId = reader.GetInt32(3);
-                            int tipsterId = reader.GetInt32(4);
-                            Prediction prediction = new Prediction(analyze, finalPrediction, tipsterId, matchId);
-                            prediction.SetId(id);
-                            result.Add(prediction);
+                            string firstCompetitior = reader.GetString(1);
+                            string secondCompetitior = reader.GetString(2);
+                            DateTime startTime = reader.GetDateTime(3);
+                            Match match = new Match(firstCompetitior, secondCompetitior, startTime, competition.GetId());
+                            match.SetId(id);
+                            result.Add(match);
                         }
 
                     }

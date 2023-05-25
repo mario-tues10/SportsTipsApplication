@@ -3,12 +3,12 @@ using DataManagement.Entities;
 using System.Data.SqlClient;
 namespace DataManagement
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : IAccountRepository
     {
         public readonly SqlService sqlService;
-        public UserRepository(SqlService sqlService)
+        public UserRepository()
         {
-            this.sqlService = sqlService;
+            this.sqlService = new SqlService();
         }
         public void InsertIntoAccount(User user) 
         {
@@ -22,6 +22,13 @@ namespace DataManagement
             int res = sqlService.InsertIntoTable(cmd);
             user.SetId(res);
         }
+        public void ChangePassword(User user, string newPassword)
+        {
+            string query = $"update [User] set password = '{1}' where id = @Id";
+            SqlCommand sqlCommand = new SqlCommand(query);
+            sqlCommand.Parameters.AddWithValue("@Id", user.GetId());
+            sqlService.OperateTable(sqlCommand);
+        }
         public void DeleteIntoAccount(User user)
         {
             string query = $"delete from [User] where id = @Id";
@@ -32,7 +39,7 @@ namespace DataManagement
         public User? GetAccountById(int id)
         {
             User? user = null;
-            using (SqlConnection sqlConnection = new SqlConnection(sqlService.connectionString))
+            using (SqlConnection sqlConnection = sqlService.CreateConnection())
             {
                 try
                 {
@@ -63,7 +70,7 @@ namespace DataManagement
         public List<User>? GetAllAccounts()
         {
             List<User>? result = new List<User>();
-            using (SqlConnection sqlConnection = new SqlConnection(sqlService.connectionString))
+            using (SqlConnection sqlConnection = sqlService.CreateConnection())
             {
                 string query = $"select * from [User]";
                 SqlCommand sqlCommand = new SqlCommand(query);
@@ -92,6 +99,38 @@ namespace DataManagement
             }
             return result;
         }
-
+        public List<User>? GetAllClients()
+        {
+            List<User>? result = new List<User>();
+            using (SqlConnection sqlConnection = sqlService.CreateConnection())
+            {
+                string query = $"select * from [User] where role = @Role";
+                SqlCommand sqlCommand = new SqlCommand(query);
+                sqlCommand.Parameters.AddWithValue("@Role", UserRole.Client);
+                SqlDataReader? reader = sqlService.ReadFromTable(sqlCommand, sqlConnection);
+                try
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            int id = reader.GetInt32(0);
+                            string username = reader.GetString(1);
+                            string email = reader.GetString(2);
+                            string password = reader.GetString(3);
+                            UserRole userRole = Enum.Parse<UserRole>(reader.GetString(4));
+                            User user = new User(username, email, password, userRole);
+                            user.SetId(id);
+                            result.Add(user);
+                        }
+                    }
+                }
+                catch (NullReferenceException)
+                {
+                    return null;
+                }
+            }
+            return result;
+        }
     }
 }

@@ -1,32 +1,42 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
 using DataManagement.Entities;
-using DataManagement.Interfaces;
 using DataManagement;
-using Microsoft.AspNetCore.Mvc.Formatters;
-
+using Domain;
 namespace BetExpertWeb.Pages
 {
     [Authorize]
     public class CompetitionsModel : PageModel
     {
         public List<Competition>? Competitions { get; set; }
-        private readonly ICompetitionRepository competitionRepository;
+        private CompetitionService competitionService;
+        private TipsterService tipsterService;
         public CompetitionsModel() 
         {
-            competitionRepository = new CompetitionRepository(new SqlService());
+            competitionService = new CompetitionService(new CompetitionRepository());
+            tipsterService = new TipsterService(new TipsterRepository());
         }
         public void OnGet()
         {
+            /*
             if (User.IsInRole("Client"))
             {
-                Competitions = competitionRepository.GetAllCompetitions();
+                Competitions = competitionService.GetCompetitions();
             }
             if (User.IsInRole("Tipster"))
             {
-                Competitions = competitionRepository.GetTipsterCompetitions(new TipsterRepository(new SqlService()),
-                    Convert.ToInt32(User.FindFirst("id")));
+                try
+                {
+                    Tipster? loggedTipster = tipsterService.GetMyselfById(Convert.ToInt32(User.FindFirst("id").Value));
+                    Competitions = competitionService.GetTipsterCompetitions(loggedTipster);
+                }
+                catch(Exception)
+                {
+                    ViewData["ErrorMessage"] = "No tipster!";
+                }
+               
             }
+            */
         }
     }
 }

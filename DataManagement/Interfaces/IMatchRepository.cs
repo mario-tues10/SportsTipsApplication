@@ -7,6 +7,7 @@ namespace DataManagement.Interfaces
         void DeleteIntoMatch(Match match);
         Match? GetMatchById(int id);
         List<Match>? GetAllMatches();
-        List<Prediction>? GetMatchPredictions(Match match);
+        List<Match>? GetCompetitionMatches(Competition competition);
+
     }
 }

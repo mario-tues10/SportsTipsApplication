@@ -36,6 +36,7 @@
             this.blogin = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.email = new System.Windows.Forms.TextBox();
+            this.noAccount = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // password
@@ -109,11 +110,22 @@
             this.email.Size = new System.Drawing.Size(175, 27);
             this.email.TabIndex = 22;
             // 
+            // noAccount
+            // 
+            this.noAccount.Location = new System.Drawing.Point(190, 364);
+            this.noAccount.Name = "noAccount";
+            this.noAccount.Size = new System.Drawing.Size(412, 53);
+            this.noAccount.TabIndex = 23;
+            this.noAccount.Text = "No account? Register";
+            this.noAccount.UseVisualStyleBackColor = true;
+            this.noAccount.Click += new System.EventHandler(this.noAccount_Click);
+            // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.noAccount);
             this.Controls.Add(this.email);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.blogin);
@@ -139,5 +151,6 @@
         private Button blogin;
         private Label label5;
         private TextBox email;
+        private Button noAccount;
     }
 }

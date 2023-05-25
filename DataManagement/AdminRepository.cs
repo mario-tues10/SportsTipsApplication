@@ -3,9 +3,9 @@ using DataManagement.Entities;
 using System.Data.SqlClient;
 namespace DataManagement
 {
-    public class AdminRepository : UserRepository, IUserRepository
+    public class AdminRepository : UserRepository, IAdminRepository
     {
-        public AdminRepository(SqlService sqlService) : base(sqlService) { }
+        public AdminRepository() : base() { }
         public new void InsertIntoAccount(User admin)
         {
             base.InsertIntoAccount(admin);
@@ -21,16 +21,16 @@ namespace DataManagement
             SqlCommand sqlCommand = new SqlCommand(query);
             sqlCommand.Parameters.AddWithValue("@Id", admin.GetId());
             sqlService.OperateTable(sqlCommand);
-            base.DeleteIntoAccount(admin);
         }
         public new Admin? GetAccountById(int id)
         {
             Admin? admin = null;
-            using (SqlConnection sqlConnection = new SqlConnection(sqlService.connectionString))
+            using (SqlConnection sqlConnection = sqlService.CreateConnection())
             {
                 try
                 {
-                    string query = $"select * from [User] where id = @Id";
+                    string query = $"select * from [User] inner join [Admin]" +
+                        $" on [Admin].admin_id = [User].id where id = @Id";
                     SqlCommand sqlCommand = new SqlCommand(query);
                     sqlCommand.Parameters.AddWithValue("@Id", id);
                     SqlDataReader? reader = sqlService.ReadFromTable(sqlCommand, sqlConnection);
@@ -57,7 +57,7 @@ namespace DataManagement
         public new List<Admin>? GetAllAccounts()
         {
             List<Admin>? result = new List<Admin>();
-            using (SqlConnection sqlConnection = new SqlConnection(sqlService.connectionString))
+            using (SqlConnection sqlConnection = sqlService.CreateConnection())
             {
                 string query = $"select * from [User] inner join [Admin] on [Admin].admin_id = [User].id";
                 SqlCommand sqlCommand = new SqlCommand(query);
@@ -88,8 +88,15 @@ namespace DataManagement
         }
         public void SuspendTipster(Tipster tipster)
         {
-            string query = $"update [Tipster] set suspended = '{1}' where id = @Id";
-            SqlCommand sqlCommand = new SqlCommand();
+            string query = $"update [Tipster] set suspended = '{1}' where tipster_id = @Id";
+            SqlCommand sqlCommand = new SqlCommand(query);
+            sqlCommand.Parameters.AddWithValue("@Id", tipster.GetId());
+            sqlService.OperateTable(sqlCommand);
+        }
+        public void ResumeTipster(Tipster tipster)
+        {
+            string query = $"update [Tipster] set suspended = '{0}' where tipster_id = @Id";
+            SqlCommand sqlCommand = new SqlCommand(query);
             sqlCommand.Parameters.AddWithValue("@Id", tipster.GetId());
             sqlService.OperateTable(sqlCommand);
         }

@@ -10,7 +10,7 @@
 <body>
     <h2>Competitions</h2>
 
-    @if (Model.Competitions == null)
+    @if (Model.Competitions.Count == 0)
     {
         <div class="error-message">
             There are no competitions for now!

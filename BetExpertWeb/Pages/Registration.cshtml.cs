@@ -1,19 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BetExpertWeb.Models;
+using DataManagement.Entities;
 using Domain;
 using DataManagement;
-using DataManagement.Entities;
 namespace BetExpertWeb.Pages
 {
     public class RegistrationModel : PageModel
     {
         [BindProperty]
         public RegisterViewModel Register { get; set; }
-        private AuthenticationHandler registerHandler { get; set; }
+        private AuthenticationHandler authenticationHandler;
         public RegistrationModel()
         {
-            registerHandler = new AuthenticationHandler();
         }
         public void OnGet()
         {
@@ -24,15 +23,17 @@ namespace BetExpertWeb.Pages
             {
                 try
                 {
-                    if (Register.TipsterSpecialty.Equals("User"))
-                    { 
-                        registerHandler.Register(Register.Username, Register.Email, Register.Password, 
-                            UserRole.Client, null, new UserRepository(new SqlService()));
-                    }
-                    else
+                    if (Register.RegistrationType.Equals("User"))
                     {
-                        registerHandler.Register(Register.Username, Register.Email, Register.Password, 
-                            UserRole.Tipster, Register.TipsterSpecialty, new TipsterRepository(new SqlService()));
+                        authenticationHandler = new AuthenticationHandler(new UserRepository());
+                        authenticationHandler.Register(Register.Username, Register.Email,
+                            Register.Password, UserRole.Client);
+                    }
+                    if (Register.RegistrationType.Equals("Tipster")) 
+                    {
+                        authenticationHandler = new AuthenticationHandler(new TipsterRepository());
+                        authenticationHandler.Register(Register.Username, Register.Email,
+                            Register.Password, UserRole.Tipster);
                     }
                 }
                 catch (Exception ex)
