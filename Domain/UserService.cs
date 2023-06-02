@@ -19,7 +19,7 @@ namespace Domain
         }
         public void ChangePassword(User user, string oldPassword, string newPassword)
         {
-            if (BCrypt.Net.BCrypt.Verify(oldPassword, user.Password))
+            if (BCrypt.Net.BCrypt.Verify(oldPassword, user.GetPassword()))
             {
                 string hashedNewPassword = BCrypt.Net.BCrypt.HashPassword(newPassword);
                 userRepository.ChangePassword(user, hashedNewPassword);

@@ -16,7 +16,7 @@ namespace Domain
             {
                 foreach (User user in accountRepository.GetAllAccounts())
                 {
-                    if (user.Username == username && user.Email == email && BCrypt.Net.BCrypt.Verify(password, user.Password))
+                    if (user.Username == username && user.Email == email && BCrypt.Net.BCrypt.Verify(password, user.GetPassword()))
                     {
                         return user;
                     }

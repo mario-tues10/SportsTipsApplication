@@ -52,7 +52,8 @@ namespace Domain
         }
         public void ChangePassword(Tipster tipster, string oldPassword, string newPassword)
         {
-            if (BCrypt.Net.BCrypt.Verify(oldPassword, tipster.Password))
+            if (BCrypt.Net.BCrypt.Verify(oldPassword, tipster.GetPassword()
+                ))
             {
                 string hashedNewPassword = BCrypt.Net.BCrypt.HashPassword(newPassword);
                 tipsterRepository.ChangePassword(tipster, hashedNewPassword);

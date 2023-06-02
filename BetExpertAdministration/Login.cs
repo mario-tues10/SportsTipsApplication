@@ -17,7 +17,7 @@ namespace BetExpertAdministration
             User? loggingAdmin = authenticationHandler.Authenticate(username.Text, email.Text, password.Text);
             if(loggingAdmin != null) {
                 Admin loggedAdmin = new Admin(loggingAdmin.Username, loggingAdmin.Email,
-                    loggingAdmin.Password, loggingAdmin.UserRole);
+                    loggingAdmin.GetPassword(), loggingAdmin.UserRole);
                 loggedAdmin.SetId(loggingAdmin.GetId());
                 AdminPanel adminPanel = new AdminPanel(loggedAdmin);
                 adminPanel.Show();

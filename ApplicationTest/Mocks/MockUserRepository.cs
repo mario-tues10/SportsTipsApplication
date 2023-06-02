@@ -4,7 +4,7 @@ namespace ApplicationTest.Mocks
 {
     public class MockUserRepository : IAccountRepository
     {
-        private List<User> Users;
+        public List<User> Users { get; private set; }
         public MockUserRepository(List<User> users)
         {
             Users = users;
@@ -19,7 +19,7 @@ namespace ApplicationTest.Mocks
         }
         public void ChangePassword(User user, string newPassword)
         {
-            user.Password = newPassword;
+            user.SetPassword(newPassword);
         }
         public User GetAccountById(int id)
         {

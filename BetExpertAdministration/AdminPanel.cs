@@ -85,7 +85,7 @@ namespace BetExpertAdministration
         {
             try
             {
-                DialogResult result = MessageBox.Show("Are you sure suspending that tipster?", "Confirm",
+                DialogResult result = MessageBox.Show("Are you sure deleting this competition?", "Confirm",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
@@ -169,6 +169,7 @@ namespace BetExpertAdministration
                         Matches.SelectedItems[0].SubItems[2].Text,
                         DateTime.Parse(Matches.SelectedItems[0].SubItems[3].Text),
                         Convert.ToInt32(Matches.SelectedItems[0].SubItems[4].Text));
+                    match.SetId(Convert.ToInt32(Matches.SelectedItems[0].SubItems[0].Text));
                     matchService.DeleteMatch(match);
                     MessageBox.Show("You have deleted the selected match correctly!", "Success!",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);

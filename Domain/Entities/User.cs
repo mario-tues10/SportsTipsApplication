@@ -3,9 +3,9 @@
     public class User
     {
         private int Id; 
-        public string Username { get; set; }
-        public string Email { get;  set; }
-        public string Password { get; set; }
+        public string Username { get; private set; }
+        public string Email { get; private set; }
+        private string Password;
         public UserRole UserRole { get; set; }
         public User(string username, string email, string password, UserRole userRole)
         {
@@ -22,7 +22,14 @@
         {
             Id = id;
         }
-        public 
+        public string GetPassword()
+        {
+            return Password;
+        }
+        public void SetPassword(string password)
+        {
+            Password = password;
+        }
 
     }
 }
