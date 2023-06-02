@@ -1,5 +1,5 @@
-﻿using DataManagement.Interfaces;
-using DataManagement.Entities;
+﻿using Domain.Entities;
+using Domain.Interfaces;
 namespace Domain
 {
     public class PredictionService
@@ -29,11 +29,14 @@ namespace Domain
         {
             return predictionRepository.GetMatchPredictions(match);
         }
-        public string GetCreatorUsername(Prediction prediction)
+        public Tipster? GetCreator(Prediction prediction)
         {
-            return predictionRepository.GetCreatorUsername(prediction);
+            return predictionRepository.GetCreator(prediction);
         }
-
+        public List<Prediction>? BestTipsterPredictions(Match match)
+        {
+            return predictionRepository.SortedPredictions(match);
+        }
     }
 
 }

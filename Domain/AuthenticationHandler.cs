@@ -1,5 +1,6 @@
-﻿using DataManagement.Interfaces;
-using DataManagement.Entities;
+﻿using Domain.Entities;
+using Domain.Interfaces;
+using System.Text.RegularExpressions;
 namespace Domain
 {
     public class AuthenticationHandler
@@ -28,7 +29,11 @@ namespace Domain
             return null;
         }
         public void Register(string username, string email, string password, UserRole role)
-        {
+        { 
+            Regex validEmail = new Regex("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$");
+            if (!validEmail.IsMatch(email)) {
+                throw new Exception("Wrong email!");
+            }
             if (IsPresentAccount(username, email, password) != null)
             {
                 throw new Exception("There is already an account with that credentials!");

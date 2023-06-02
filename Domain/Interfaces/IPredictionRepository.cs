@@ -1,6 +1,5 @@
-﻿using DataManagement.Entities;
-
-namespace DataManagement.Interfaces
+﻿using Domain.Entities;
+namespace Domain.Interfaces
 {
     public interface IPredictionRepository
     {
@@ -9,6 +8,7 @@ namespace DataManagement.Interfaces
         List<Prediction>? GetPredictions();
         Prediction? GetPredictionById(int id);
         List<Prediction>? GetMatchPredictions(Match match);
-        string GetCreatorUsername(Prediction prediction);
+        List<Prediction>? SortedPredictions(Match match);
+        Tipster? GetCreator(Prediction prediction);
     }
 }

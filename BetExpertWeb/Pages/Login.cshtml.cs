@@ -5,8 +5,9 @@ using Domain;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using Domain.Entities;
 using DataManagement;
-using DataManagement.Entities;
+
 namespace BetExpertWeb.Pages
 {
     public class LoginModel : PageModel
@@ -33,20 +34,21 @@ namespace BetExpertWeb.Pages
                         List<Claim> claims = new List<Claim>
                         {
                             new Claim("id", LoggedIn.GetId().ToString()),
-                            new Claim(ClaimTypes.Role, LoggedIn.UserRole.ToString())
+                            new Claim("role", LoggedIn.UserRole.ToString())
                         };
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                         HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity));
-                        return new RedirectToPageResult("Competitions");
+                        return RedirectToPage("Competitions");
                     }
                     else
                     {
                         ViewData["ErrorMessage"] = "Unable to login!";
                     }
 
-                }catch(Exception ex)
+                }
+                catch(Exception)
                 {
-                    ViewData["ErrorMessage"] = ex.Message;
+                    ViewData["ErrorMessage"] = "No account!";
                 }
             }
             return Page();

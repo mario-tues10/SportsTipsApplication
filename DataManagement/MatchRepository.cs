@@ -1,5 +1,5 @@
-﻿using DataManagement.Entities;
-using DataManagement.Interfaces;
+﻿using Domain.Entities;
+using Domain.Interfaces;
 using System.Data.SqlClient;
 namespace DataManagement
 {

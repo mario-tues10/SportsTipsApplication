@@ -1,5 +1,5 @@
-﻿using DataManagement.Interfaces;
-using DataManagement.Entities;
+﻿using Domain.Entities;
+using Domain.Interfaces;
 using System.Data.SqlClient;
 namespace DataManagement
 {
@@ -23,6 +23,7 @@ namespace DataManagement
             SqlCommand sqlCommand = new SqlCommand(query);
             sqlCommand.Parameters.AddWithValue("@Id", tipster.GetId());
             sqlService.OperateTable(sqlCommand);
+            base.DeleteIntoAccount(tipster);
         }
         public new Tipster? GetAccountById(int id)
         {

@@ -3,7 +3,10 @@
 @{
     ViewData["Title"] = "Registration";
 }
-<h2>Register a new user</h2>
+<head>
+    <link rel="stylesheet" href="~/css/authentication.css" asp-append-version="true" />
+</head>
+<h2>Register</h2>
 <form method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
@@ -11,25 +14,21 @@
         <input asp-for="Register.Username" class="form-control" />
         <span asp-validation-for="Register.Username" class="text-danger"></span>
     </div>
-    <br>
     <div class="form-group">
         <label asp-for="Register.Email">Email:</label>
         <input asp-for="Register.Email" class="form-control" />
         <span asp-validation-for="Register.Email" class="text-danger"></span>
     </div>
-    <br>
     <div class="form-group">
         <label asp-for="Register.Password">Password:</label>
         <input asp-for="Register.Password" class="form-control" />
         <span asp-validation-for="Register.Password" class="text-danger"></span>
     </div>
-    <br>
     <div class="form-group">
         <label asp-for="Register.ConfirmPassword">Confirm password:</label>
         <input asp-for="Register.ConfirmPassword" class="form-control" />
         <span asp-validation-for="Register.ConfirmPassword" class="text-danger"></span>
     </div>
-    <br>
     <div class="form-group">
         <label asp-for="Register.RegistrationType">Registration type:</label>
         <select class="form-select" asp-for="Register.RegistrationType">
@@ -37,7 +36,6 @@
             <option value="Tipster">Tipster</option>
         </select>
     </div>
-    <br>
     <button type="submit" class="btn btn-primary">Register</button>
 </form>
 @section scripts{

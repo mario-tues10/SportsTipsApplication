@@ -1,5 +1,5 @@
-﻿using Domain;
-using DataManagement.Entities;
+﻿using Domain.Entities;
+using Domain;
 using DataManagement;
 namespace BetExpertAdministration
 {
@@ -31,7 +31,10 @@ namespace BetExpertAdministration
             try
             {
                 adminService.ChangePassword(loggedAdmin, oldPassword.Text, newPassword.Text);
-            }catch(Exception ex)
+                MessageBox.Show("You have changed your password correctly!", "Success!",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch(Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

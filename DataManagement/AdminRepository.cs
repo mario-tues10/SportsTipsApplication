@@ -1,5 +1,5 @@
-﻿using DataManagement.Interfaces;
-using DataManagement.Entities;
+﻿using Domain.Entities;
+using Domain.Interfaces;
 using System.Data.SqlClient;
 namespace DataManagement
 {
@@ -17,10 +17,11 @@ namespace DataManagement
 
         public new void DeleteIntoAccount(User admin)
         {
-            string query = $"delete from [Admin] where id = @Id";
+            string query = $"delete from [Admin] where admin_id = @Id";
             SqlCommand sqlCommand = new SqlCommand(query);
             sqlCommand.Parameters.AddWithValue("@Id", admin.GetId());
             sqlService.OperateTable(sqlCommand);
+            base.DeleteIntoAccount(admin);
         }
         public new Admin? GetAccountById(int id)
         {

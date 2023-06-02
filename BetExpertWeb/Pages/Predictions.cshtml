@@ -1,30 +1,30 @@
 ﻿@page
 @model BetExpertWeb.Pages.PredictionsModel
 @{
-
     ViewData["Title"] = "Predictions";
 }
 <head>
     <link rel="stylesheet" href="~/css/sports.css" asp-append-version="true" />
 </head>
-<body>
+@ViewData["ErrorMessage"]
+@if (Model.Predictions == null)
+{
+    <div class="error-message">
+        There are no predictions for now!
+    </div>
+}
+else
+{
     <h2>Predictions</h2>
-    @if (Model.Predictions == null)
-    {
-        <div class="error-message">
-            There are no predictions for now!
-        </div>
-    }
-    else
-    {
-        <ul class="prediction-list">
-            @foreach (var prediction in Model.Predictions)
-            {
-                <li>
-                    <div class="prediction-analysis">@prediction.Analyse</div>
-                    <div class="prediction-final">@prediction.FinalPrediction</div>
-                </li>
-            }
-        </ul>
-    }
-</body>
+    <ul class="prediction-list">
+        @foreach (var prediction in Model.Predictions)
+        {
+            <li>
+                <div class="prediction-creator">@prediction.TipsterUsername</div>
+                <div class="prediction-success">@prediction.TipsterSuccess</div>
+                <div class="prediction-analysis">@prediction.Analyse</div>
+                <div class="prediction-final">@prediction.FinalPrediction</div>
+            </li>
+        }
+    </ul>
+}

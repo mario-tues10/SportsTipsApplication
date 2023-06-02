@@ -1,5 +1,5 @@
-﻿using DataManagement.Entities;
-using DataManagement.Interfaces;
+﻿using Domain.Entities;
+using Domain.Interfaces;
 using System.Data.SqlClient;
 namespace DataManagement
 {
@@ -18,8 +18,8 @@ namespace DataManagement
             cmd.Parameters.AddWithValue("@Analysis", prediction.Analyse);
             cmd.Parameters.AddWithValue("@FinalPrediction", prediction.FinalPrediction);
             cmd.Parameters.AddWithValue("@CreationTime", DateTime.Now);
-            cmd.Parameters.AddWithValue("@StartTime", prediction.TipsterId);
-            cmd.Parameters.AddWithValue("@CompetitionId", prediction.MatchId);
+            cmd.Parameters.AddWithValue("@TipsterId", prediction.TipsterId);
+            cmd.Parameters.AddWithValue("@MatchId", prediction.MatchId);
             int res = sqlService.InsertIntoTable(cmd);
             prediction.SetId(res);
         }
@@ -137,12 +137,51 @@ namespace DataManagement
             }
             return result;
         }
-        public string GetCreatorUsername(Prediction prediction)
+        public List<Prediction>? SortedPredictions(Match match)
         {
-            string username = "";
+            List<Prediction>? result = new List<Prediction>();
             using (SqlConnection sqlConnection = sqlService.CreateConnection())
             {
-                string query = $"select [Tipster].username from [Tipster] where [Tipster].tipster_id = @TipsterId";
+                string query = $"select * from [Prediction] " +
+                    $" inner join [Tipster] on [Prediction].tipster_id = [Tipster].tipster_id" +
+                    $" where match_id = @Id";
+                SqlCommand sqlCommand = new SqlCommand(query);
+                sqlCommand.Parameters.AddWithValue("@Id", match.GetId());
+                SqlDataReader? reader = sqlService.ReadFromTable(sqlCommand, sqlConnection);
+                try
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            int id = reader.GetInt32(0);
+                            string analyze = reader.GetString(1);
+                            string finalPrediction = reader.GetString(2);
+                            DateTime creationTime = reader.GetDateTime(3);
+                            int matchId = reader.GetInt32(4);
+                            int tipsterId = reader.GetInt32(5);
+                            Prediction prediction = new Prediction(analyze, finalPrediction,
+                                creationTime, tipsterId, matchId);
+                            prediction.SetId(id);
+                            result.Add(prediction);
+                        }
+
+                    }
+
+                }
+                catch (NullReferenceException)
+                {
+                    return null;
+                }
+            }
+            return result;
+        } 
+        public Tipster? GetCreator(Prediction prediction)
+        {
+            Tipster? creator = null;
+            using (SqlConnection sqlConnection = sqlService.CreateConnection())
+            {
+                string query = $"select * from [Tipster] where [Tipster].tipster_id = @TipsterId";
                 SqlCommand sqlCommand = new SqlCommand(query);
                 sqlCommand.Parameters.AddWithValue("@TipsterId", prediction.TipsterId);
                 SqlDataReader? reader = sqlService.ReadFromTable(sqlCommand, sqlConnection);
@@ -152,7 +191,15 @@ namespace DataManagement
                     {
                         while (reader.Read())
                         {
-                            username = reader.GetString(0);
+                            int id = reader.GetInt32(0);
+                            string username = reader.GetString(1);
+                            string email = reader.GetString(2);
+                            string password = reader.GetString(3);
+                            UserRole userRole = Enum.Parse<UserRole>(reader.GetString(4));
+                            decimal successRate = reader.GetDecimal(6);
+                            bool suspended = Convert.ToBoolean(reader.GetByte(7));
+                            creator = new Tipster(username, email, password, userRole, successRate, suspended);
+                            creator.SetId(id);
                         }
                     }
 
@@ -162,7 +209,7 @@ namespace DataManagement
                     return null;
                 }
             }
-            return username;
+            return creator;
         }
     }
 }

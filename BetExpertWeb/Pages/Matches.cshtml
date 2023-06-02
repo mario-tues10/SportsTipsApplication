@@ -4,29 +4,38 @@
     ViewData["Title"] = "Matches";
 }
 <head>
-    <link rel="stylesheet" href="~/css/sports.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/match.css" asp-append-version="true" />
 </head>
-<body>
-    @if (Model.Matches.Count == 0)
-    {
-        <div class="error-message">
-            There are no matches for now!
-        </div>
-    }
-    else
-    {
-        <h2>Available matches</h2>
-        <div class="matches">
-            @foreach (var match in Model.Matches)
+@ViewData["ErrorMessage"]
+@if (Model.Matches == null)
+{
+    <div class="error-message">
+        There are no matches for now!
+    </div>
+}
+else
+{
+    <h2>Available matches</h2>
+    <div class="matches">
+        @foreach (var match in Model.Matches)
+        {
+            @if (match.StartTime > DateTime.Now)
             {
-                @if (match.StartTime > DateTime.Now)
+                @if (User.IsInRole("Client"))
                 {
                     <form method="get" action="Predictions">
                         <input type="hidden" name="matchId" value=@match.GetId() />
                         <button type="submit" value="@match.GetId()">@match.FirstCompetitor Vs @match.SecondCompetitor</button>
                     </form>
                 }
+                else if (User.IsInRole("Tipster"))
+                {
+                    <form method="get" action="PredictionsCreation">
+                        <input type="hidden" name="matchId" value=@match.GetId() />
+                        <button type="submit" value="@match.GetId()">@match.FirstCompetitor Vs @match.SecondCompetitor</button>
+                    </form>
+                }
             }
-        </div>
-    }
-</body>
+        }
+    </div>
+}

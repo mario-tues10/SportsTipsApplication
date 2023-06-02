@@ -1,5 +1,5 @@
-﻿using DataManagement.Interfaces;
-using DataManagement.Entities;
+﻿using Domain.Entities;
+using Domain.Interfaces;
 namespace Domain
 {
     public class CompetitionService

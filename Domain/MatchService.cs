@@ -1,7 +1,5 @@
-﻿using DataManagement.Interfaces;
-using DataManagement.Entities;
-using DataManagement;
-
+﻿using Domain.Entities;
+using Domain.Interfaces;
 namespace Domain
 { 
     public class MatchService
@@ -11,8 +9,12 @@ namespace Domain
         {
             this.matchRepository = matchRepository;
         }
-        public void CreateMatch(Match match)
+        public void CreateMatch(Competition competition, Match match)
         {
+            if(match.StartTime < competition.StartDate || match.StartTime > competition.EndDate)
+            {
+                throw new Exception("The date of the match is out of the competition's date!");
+            }
             matchRepository.InsertIntoMatch(match);
         }
         public void DeleteMatch(Match match)

@@ -1,39 +1,29 @@
-﻿.team-names, .analysis, .final-prediction {
-    margin-bottom: 20px;
+﻿.prediction-list {
+    list-style-type: none;
+    padding: 0;
 }
 
-    .team-names h3, .analysis h3, .final-prediction h3 {
-        margin-bottom: 10px;
+    .prediction-list li {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
     }
 
-.form-group {
-    margin-bottom: 10px;
+.prediction-creator {
+    font-weight: bold;
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
+.prediction-success {
+    margin-top: 5px;
+    color: green;
 }
 
-.form-control {
-    display: block;
-    width: 100%;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #555;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+.prediction-analysis {
+    margin-top: 10px;
 }
 
-.btn-primary {
-    color: #fff;
-    background-color: #337ab7;
-    border-color: #2e6da4;
+.prediction-final {
+    margin-top: 10px;
+    font-weight: bold;
 }

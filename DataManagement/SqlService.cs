@@ -1,4 +1,4 @@
-﻿using DataManagement.Interfaces;
+﻿using Domain.Interfaces;
 using System.Data.SqlClient;
 namespace DataManagement
 {
@@ -62,7 +62,7 @@ namespace DataManagement
                 try
                 {
                     sqlCommand.Connection = sqlConnection;
-                    int res = sqlCommand.ExecuteNonQuery();
+                    result = sqlCommand.ExecuteNonQuery();
                 }
                 catch (Exception)
                 {

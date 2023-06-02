@@ -1,0 +1,53 @@
+﻿@page
+@model BetExpertWeb.Pages.ProfileModel
+@{
+    ViewData["Title"] = "Profile";
+}
+<head>
+    <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
+</head>
+@ViewData["ErrorMessage"]
+<body>
+    @if (Model.Profile == null)
+    {
+        <div class="alert alert-success">
+            <p>This profile doesn't exist!</p>
+        </div>
+    }
+    else
+    {
+        <h2>Profile Page</h2>
+        <div class="form-group">
+            <label asp-for="Profile.Username">Username:</label>
+            <p>@Model.Profile.Username</p>
+        </div>
+        <div class="form-group">
+            <label asp-for="Profile.Email">Email:</label>
+            <p>@Model.Profile.Email</p>
+        </div>
+        <div class="form-group">
+            <label asp-for="Profile.Role">Role:</label>
+            <p>@Model.Profile.Role</p>
+        </div>
+        if (User.IsInRole("Tipster"))
+        {
+            <div class="form-group">
+                <label asp-for="Profile.SuccessRate">Success rate:</label>
+                <p>@Model.Profile.SuccessRate</p>
+            </div>
+        }
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Profile.OldPassword">Old password:</label>
+                <input asp-for="Profile.OldPassword" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Profile.NewPassword">New password:</label>
+                <input asp-for="Profile.NewPassword" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">Change password!</button>
+        </form>
+        <br>
+    }
+</body>
+

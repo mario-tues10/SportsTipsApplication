@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BetExpertWeb.Models;
-using DataManagement.Entities;
+using Domain.Entities;
 using Domain;
 using DataManagement;
 namespace BetExpertWeb.Pages
@@ -23,7 +23,7 @@ namespace BetExpertWeb.Pages
             {
                 try
                 {
-                    if (Register.RegistrationType.Equals("User"))
+                    if (Register.RegistrationType.Equals("Client"))
                     {
                         authenticationHandler = new AuthenticationHandler(new UserRepository());
                         authenticationHandler.Register(Register.Username, Register.Email,

@@ -1,6 +1,6 @@
-using DataManagement;
-using DataManagement.Entities;
+using Domain.Entities;
 using Domain;
+using DataManagement;
 namespace BetExpertAdministration
 {
     public partial class Registration : Form

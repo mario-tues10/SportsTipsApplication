@@ -1,6 +1,6 @@
-﻿using DataManagement;
+﻿using Domain.Entities;
 using Domain;
-using DataManagement.Entities;
+using DataManagement;
 namespace BetExpertAdministration
 {
     public partial class Login : Form
@@ -18,6 +18,7 @@ namespace BetExpertAdministration
             if(loggingAdmin != null) {
                 Admin loggedAdmin = new Admin(loggingAdmin.Username, loggingAdmin.Email,
                     loggingAdmin.Password, loggingAdmin.UserRole);
+                loggedAdmin.SetId(loggingAdmin.GetId());
                 AdminPanel adminPanel = new AdminPanel(loggedAdmin);
                 adminPanel.Show();
                 this.Hide();

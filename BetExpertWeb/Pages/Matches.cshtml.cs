@@ -1,6 +1,6 @@
-using DataManagement.Entities;
-using DataManagement;
+using Domain.Entities;
 using Domain;
+using DataManagement;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace BetExpertWeb.Pages

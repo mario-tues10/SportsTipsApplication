@@ -1,7 +1,5 @@
-﻿using DataManagement.Interfaces;
-using DataManagement.Entities;
-using DataManagement;
-
+﻿using Domain.Entities;
+using Domain.Interfaces;
 namespace Domain
 {
     public class TipsterService
@@ -10,10 +8,6 @@ namespace Domain
         public TipsterService(ITipsterRepository tipsterRepository)
         {
             this.tipsterRepository = tipsterRepository;
-        }
-        public Prediction MakePrediction(string analysis, string finalPrediction, int matchId, int tipsterId)
-        {
-            return new Prediction(analysis, finalPrediction, DateTime.Now, tipsterId, matchId);
         }
         public List<Prediction>? GetPredictions(Tipster tipster)
         {
@@ -32,9 +26,16 @@ namespace Domain
             try
             {
                 List<Prediction>? Predictions = tipsterRepository.GetPredictions(tipster);
-                Predictions.Sort((x, y) => DateTime.Compare(y.CreationTime, x.CreationTime));
-                TimeSpan timeSpan = DateTime.Now.Subtract(Predictions[0].CreationTime);
-                return timeSpan.Days;
+                if (Predictions != null)
+                {
+                    Predictions.Sort((x, y) => DateTime.Compare(y.CreationTime, x.CreationTime));
+                    TimeSpan timeSpan = DateTime.Now.Subtract(Predictions[0].CreationTime);
+                    return timeSpan.Days;
+                }
+                else
+                {
+                    return 0;
+                }
             }
             catch (NullReferenceException)
             {
@@ -48,6 +49,18 @@ namespace Domain
         public void DeleteAccount(Tipster tipster)
         {
             tipsterRepository.DeleteIntoAccount(tipster);
+        }
+        public void ChangePassword(Tipster tipster, string oldPassword, string newPassword)
+        {
+            if (BCrypt.Net.BCrypt.Verify(oldPassword, tipster.Password))
+            {
+                string hashedNewPassword = BCrypt.Net.BCrypt.HashPassword(newPassword);
+                tipsterRepository.ChangePassword(tipster, hashedNewPassword);
+            }
+            else
+            {
+                throw new Exception("Passwords don't match!");
+            }
         }
     }
 }

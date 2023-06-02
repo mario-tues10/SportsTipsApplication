@@ -1,6 +1,5 @@
-﻿using DataManagement.Interfaces;
-using DataManagement.Entities;
-using BCrypt.Net;
+﻿using Domain.Entities;
+using Domain.Interfaces;
 namespace Domain
 {
     public class AdminService
@@ -34,7 +33,8 @@ namespace Domain
         {
             if(BCrypt.Net.BCrypt.Verify(oldPassword, admin.Password)) 
             {
-                adminRepository.ChangePassword(admin, newPassword);
+                string hashedNewPassword = BCrypt.Net.BCrypt.HashPassword(newPassword);
+                adminRepository.ChangePassword(admin, hashedNewPassword);
             }
             else
             {

@@ -1,5 +1,5 @@
-﻿using DataManagement.Entities;
-namespace DataManagement.Interfaces
+﻿using Domain.Entities;
+namespace Domain.Interfaces
 {
     public interface IAccountRepository
     {

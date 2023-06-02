@@ -4,38 +4,48 @@ using BetExpertWeb.Models;
 using Microsoft.AspNetCore.Authorization;
 using Domain;
 using DataManagement;
-using DataManagement.Entities;
+using Domain.Entities;
 namespace BetExpertWeb.Pages
 {
-    [Authorize(Roles = "Tipster")]
+    [Authorize]
     public class PredictionsCreationModel : PageModel
     {
         [BindProperty]
         public PredictionCreationViewModel Prediction { get; set; }
         private PredictionService predictionService;
-        private TipsterService tipsterService;
+        private MatchService matchService;
         public bool IsSubmitted { get; set; }
         public PredictionsCreationModel()
         {
+            Prediction = new PredictionCreationViewModel();
             predictionService = new PredictionService(new PredictionRepository());
-            tipsterService = new TipsterService(new TipsterRepository());
+            matchService = new MatchService(new MatchRepository());
         }
-        public void OnGet()
+        public void OnGet(int matchId)
         {
-            IsSubmitted = false;
+            try
+            {
+                Match? match = matchService.GetMyselfById(matchId);
+                Prediction.HomeTeam = match.FirstCompetitor;
+                Prediction.AwayTeam = match.SecondCompetitor;
+            }
+            catch (NullReferenceException)
+            {
+                ViewData["ErrorMessage"] = "No match!";
+            }
         }
         public IActionResult OnPost(int matchId)
         {
             if (ModelState.IsValid)
             {
-                Prediction? prediction = tipsterService.MakePrediction(Prediction.Analysis,
-                    Prediction.FinalPrediction, matchId, Convert.ToInt32(User.FindFirst("id").Value));
+                Prediction? prediction = new Prediction(Prediction.Analysis,
+                    Prediction.FinalPrediction, DateTime.Now, matchId, Convert.ToInt32(User.FindFirst("id").Value));
                 predictionService.CreatePrediction(prediction);
+                IsSubmitted = true;
 ;               return RedirectToPage("Competitions");
             }
             else
             {
-                ViewData["ErrorMessage"] = "Incorrect data.";
                 return Page();
             }
         }

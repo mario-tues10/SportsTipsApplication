@@ -1,5 +1,5 @@
-﻿using DataManagement.Interfaces;
-using DataManagement.Entities;
+﻿using Domain.Entities;
+using Domain.Interfaces;
 using System.Data.SqlClient;
 namespace DataManagement
 {
@@ -24,8 +24,9 @@ namespace DataManagement
         }
         public void ChangePassword(User user, string newPassword)
         {
-            string query = $"update [User] set password = '{1}' where id = @Id";
+            string query = $"update [User] set password = @Password where id = @Id";
             SqlCommand sqlCommand = new SqlCommand(query);
+            sqlCommand.Parameters.AddWithValue("@Password", newPassword);
             sqlCommand.Parameters.AddWithValue("@Id", user.GetId());
             sqlService.OperateTable(sqlCommand);
         }

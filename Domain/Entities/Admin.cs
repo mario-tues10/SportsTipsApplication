@@ -1,4 +1,4 @@
-﻿namespace DataManagement.Entities
+﻿namespace Domain.Entities
 {
     public class Admin : User
     {

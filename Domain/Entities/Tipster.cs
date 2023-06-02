@@ -1,7 +1,7 @@
-﻿namespace DataManagement.Entities
+﻿namespace Domain.Entities
 { 
     public class Tipster : User
-    {
+    { 
         public decimal SuccessRate { get; private set; }
         public bool Suspended { get; private set; }
 

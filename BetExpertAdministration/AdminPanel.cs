@@ -1,8 +1,6 @@
 ﻿using DataManagement;
-using DataManagement.Entities;
-using DataManagement.Interfaces;
+using Domain.Entities;
 using Domain;
-
 namespace BetExpertAdministration
 {
     public partial class AdminPanel : Form
@@ -20,11 +18,10 @@ namespace BetExpertAdministration
             competitionService = new CompetitionService(new CompetitionRepository());
             matchService = new MatchService(new MatchRepository());
             tipsterService = new TipsterService(new TipsterRepository());
+            assignCompetition.Click += new EventHandler(OnAssingningCompetitions);
             loggedUser.Text = $"Logged in as: " + loggedAdmin.Username;
         }
-
-
-        private void OnAssingningCompetitions(object sender, EventArgs e)
+        private void OnAssingningCompetitions(object? sender, EventArgs? e)
         {
             assignCompetition.Items.Clear();
             try
@@ -45,9 +42,15 @@ namespace BetExpertAdministration
         {
             try
             {
+                if (name.Text.Length == 0)
+                {
+                    name.Text = "TBA";
+                }
                 Competition competition = new Competition(name.Text, Enum.Parse<Sport>(sport.SelectedItem.ToString()),
                     startDate.Value, endDate.Value);
                 competitionService.CreateCompetition(competition);
+                MessageBox.Show("You have created competition correctly!", "Success!",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (NullReferenceException)
             {
@@ -82,12 +85,19 @@ namespace BetExpertAdministration
         {
             try
             {
-                Competition competition = new Competition(Competitions.SelectedItems[0].SubItems[1].Text,
-                    Enum.Parse<Sport>(Competitions.SelectedItems[0].SubItems[2].Text),
-                    DateTime.Parse(Competitions.SelectedItems[0].SubItems[3].Text),
-                    DateTime.Parse(Competitions.SelectedItems[0].SubItems[4].Text));
-                competition.SetId(Convert.ToInt32(Competitions.SelectedItems[0].SubItems[0].Text));
-                competitionService.DeleteCompetition(competition);
+                DialogResult result = MessageBox.Show("Are you sure suspending that tipster?", "Confirm",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    Competition competition = new Competition(Competitions.SelectedItems[0].SubItems[1].Text,
+                        Enum.Parse<Sport>(Competitions.SelectedItems[0].SubItems[2].Text),
+                        DateTime.Parse(Competitions.SelectedItems[0].SubItems[3].Text),
+                        DateTime.Parse(Competitions.SelectedItems[0].SubItems[4].Text));
+                    competition.SetId(Convert.ToInt32(Competitions.SelectedItems[0].SubItems[0].Text));
+                    competitionService.DeleteCompetition(competition);
+                    MessageBox.Show("You have deleted the selected competition correctly!", "Success!",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch (NullReferenceException)
             {
@@ -103,9 +113,21 @@ namespace BetExpertAdministration
         {
             try
             {
+                if (firstCompetitor.Text.Length == 0)
+                {
+                    firstCompetitor.Text = "TBA";
+                }
+                if (secondCompetitor.Text.Length == 0)
+                {
+                    secondCompetitor.Text = "TBA";
+                }
                 Match match = new Match(firstCompetitor.Text, secondCompetitor.Text, startTime.Value,
                     Convert.ToInt32(assignCompetition.ValueMember));
-                matchService.CreateMatch(match);
+                Competition? assignedCompetition = competitionService.GetMyselfById
+                    (Convert.ToInt32(assignCompetition.ValueMember));
+                matchService.CreateMatch(assignedCompetition, match);
+                MessageBox.Show("You have created match correctly!", "Success!",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (NullReferenceException)
             {
@@ -116,7 +138,6 @@ namespace BetExpertAdministration
                 MessageBox.Show(ex.Message, "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void allMatches_Click(object sender, EventArgs e)
         {
             Matches.Items.Clear();
@@ -140,11 +161,18 @@ namespace BetExpertAdministration
         {
             try
             {
-                Match match = new Match(Matches.SelectedItems[0].SubItems[1].Text,
-                    Matches.SelectedItems[0].SubItems[2].Text,
-                    DateTime.Parse(Matches.SelectedItems[0].SubItems[3].Text),
-                    Convert.ToInt32(Matches.SelectedItems[0].SubItems[4].Text));
-                matchService.DeleteMatch(match);
+                DialogResult result = MessageBox.Show("Are you sure deleting that match?", "Confirm",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    Match match = new Match(Matches.SelectedItems[0].SubItems[1].Text,
+                        Matches.SelectedItems[0].SubItems[2].Text,
+                        DateTime.Parse(Matches.SelectedItems[0].SubItems[3].Text),
+                        Convert.ToInt32(Matches.SelectedItems[0].SubItems[4].Text));
+                    matchService.DeleteMatch(match);
+                    MessageBox.Show("You have deleted the selected match correctly!", "Success!",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch (NullReferenceException)
             {
@@ -180,8 +208,15 @@ namespace BetExpertAdministration
         {
             try
             {
-                Tipster? tipster = tipsterService.GetMyselfById(Convert.ToInt32(Tipsters.SelectedItems[0].SubItems[0].Text));
-                adminService.SuspendTipster(tipster);
+                DialogResult result = MessageBox.Show("Are you sure suspending that tipster?", "Confirm",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    Tipster? tipster = tipsterService.GetMyselfById(Convert.ToInt32(Tipsters.SelectedItems[0].SubItems[0].Text));
+                    adminService.SuspendTipster(tipster);
+                    MessageBox.Show("You have suspended the tipster's account correctly!", "Success!",
+                      MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch (NullReferenceException)
             {
@@ -193,8 +228,16 @@ namespace BetExpertAdministration
         {
             try
             {
-                Tipster? tipster = tipsterService.GetMyselfById(Convert.ToInt32(Tipsters.SelectedItems[0].SubItems[0].Text));
-                adminService.ResumeTipster(tipster);
+                DialogResult result = MessageBox.Show("Are you sure resuming that tipster?", "Confirm",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    Tipster? tipster = tipsterService.GetMyselfById(Convert.ToInt32(Tipsters.SelectedItems[0].SubItems[0].Text));
+                    adminService.ResumeTipster(tipster);
+
+                    MessageBox.Show("You have resumed tipster's account correctly!", "Success!",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch (NullReferenceException)
             {
@@ -206,8 +249,17 @@ namespace BetExpertAdministration
         {
             try
             {
-                Tipster? tipster = tipsterService.GetMyselfById(Convert.ToInt32(Tipsters.SelectedItems[0].SubItems[0].Text));
-                tipsterService.DeleteAccount(tipster);
+
+                DialogResult result = MessageBox.Show("Are you sure deleting that tipster?", "Confirm",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    Tipster? tipster = tipsterService.GetMyselfById(Convert.ToInt32(Tipsters.SelectedItems[0].SubItems[0].Text));
+                    tipsterService.DeleteAccount(tipster);
+
+                    MessageBox.Show("You have deleted the tipster's account correctly!", "Success!",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch (NullReferenceException)
             {

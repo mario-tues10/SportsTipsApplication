@@ -1,5 +1,5 @@
 ﻿using System.Data.SqlClient;
-namespace DataManagement.Interfaces
+namespace Domain.Interfaces
 {
     public interface ISqlService
     {

@@ -1,5 +1,5 @@
-﻿using DataManagement.Interfaces;
-using DataManagement.Entities;
+﻿using Domain.Entities;
+using Domain.Interfaces;
 using System.Data.SqlClient;
 namespace DataManagement
 {
@@ -95,43 +95,5 @@ namespace DataManagement
             }
             return result;
         }
-        /*
-        public List<Competition>? GetTipsterCompetitions(Tipster tipster)
-        {
-            List<Competition>? result = new List<Competition>();
-            using (SqlConnection sqlConnection = sqlService.CreateConnection())
-            {
-                string query = $"select * from [Competition] where sport = @Sport";
-                SqlCommand sqlCommand = new SqlCommand(query);
-                sqlCommand.Parameters.AddWithValue("@Sport", tipster.Specialty.ToString());
-                SqlDataReader? reader = sqlService.ReadFromTable(sqlCommand, sqlConnection);
-                try
-                {
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            int id = reader.GetInt32(0);
-                            string name = reader.GetString(1);
-                            Sport sport = Enum.Parse<Sport>(reader.GetString(2));
-                            DateTime startDate = reader.GetDateTime(3);
-                            DateTime endDate = reader.GetDateTime(4);
-                            Competition competition = new Competition(name, sport, startDate, endDate);
-                            competition.SetId(id);
-                            result.Add(competition);
-                        }
-
-                    }
-
-                }
-                catch (NullReferenceException)
-                {
-                    return null;
-                }
-            }
-            return result;
-
-        }
-        */
     }
 }
