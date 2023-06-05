@@ -13,7 +13,7 @@ namespace BetExpertAdministration
             id.Enabled = false;
             username.Enabled = false;
             loggedAdmin = admin;
-            adminService = new AdminService(new AdminRepository());
+            adminService = new AdminService(new AdminRepository(), null);
             id.Text = admin.GetId().ToString();
             username.Text = admin.Username;
         }

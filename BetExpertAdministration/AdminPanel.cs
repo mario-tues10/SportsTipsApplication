@@ -14,13 +14,15 @@ namespace BetExpertAdministration
         {
             InitializeComponent();
             this.loggedAdmin = loggedAdmin;
-            adminService = new AdminService(new AdminRepository());
+            adminService = new AdminService(new AdminRepository(), new TipsterRepository());
             competitionService = new CompetitionService(new CompetitionRepository());
             matchService = new MatchService(new MatchRepository());
             tipsterService = new TipsterService(new TipsterRepository());
             assignCompetition.Click += new EventHandler(OnAssingningCompetitions);
+            adminService.LastPredictionDays += OnColorLastPredictionDays;
             loggedUser.Text = $"Logged in as: " + loggedAdmin.Username;
         }
+
         private void OnAssingningCompetitions(object? sender, EventArgs? e)
         {
             assignCompetition.Items.Clear();
@@ -38,6 +40,22 @@ namespace BetExpertAdministration
                 MessageBox.Show("There are no competitions!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void OnColorLastPredictionDays(object? sender, LastPredictionDaysArgs e)
+        {
+            ListViewItem.ListViewSubItem item = new ListViewItem.ListViewSubItem(Tipsters.Items[e.RowIndex], e.Days.ToString());
+            Tipsters.Items[e.RowIndex].UseItemStyleForSubItems = false;
+            // For test purposes the days are reduced from 5 to 1.
+            if (e.Days >= 1)
+            {
+                item.ForeColor = Color.Red;
+            }
+            else
+            {
+                item.ForeColor = Color.Green;
+            }
+            Tipsters.Items[e.RowIndex].SubItems.Insert(3, item);
+        }
+
         private void createCompetition_Click(object sender, EventArgs e)
         {
             try
@@ -191,12 +209,14 @@ namespace BetExpertAdministration
             try
             {
                 List<Tipster>? tipsters = tipsterService.GetTipsters();
+                int rowIndex = 0;
                 foreach (Tipster tipster in tipsters)
                 {
-                    string[] row = { tipster.Username, tipster.SuccessRate.ToString() + "%",
-                        tipsterService.LastPredictionDays(tipster).ToString(),tipster.Suspended.ToString()
+                    string[] row = { tipster.Username, tipster.SuccessRate.ToString() + "%", tipster.Suspended.ToString()
                     };
                     Tipsters.Items.Add(tipster.GetId().ToString()).SubItems.AddRange(row);
+                    adminService.GetLastPredictionDays(tipster, rowIndex);
+                    rowIndex++;
                 }
             }
             catch (NullReferenceException)
@@ -283,3 +303,4 @@ namespace BetExpertAdministration
         }
     }
 }
+
