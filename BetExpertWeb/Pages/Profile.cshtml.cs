@@ -4,7 +4,7 @@ using Domain.DVOs;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
+using Domain.Logic;
 namespace BetExpertWeb.Pages
 {
     public class ProfileModel : PageModel

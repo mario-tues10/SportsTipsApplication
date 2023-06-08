@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BetExpertWeb.Models;
 using Domain.Entities;
-using Domain;
+using Domain.Logic;
 using DataManagement;
 namespace BetExpertWeb.Pages
 {

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataManagement", "DataManag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{AA1AFA7E-FA75-4EA3-96F6-4A3F26C37E0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationTest", "ApplicationTest\ApplicationTest.csproj", "{6A2DDAF7-65C9-4F98-8F38-088F6590C113}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationTest", "ApplicationTest\ApplicationTest.csproj", "{6A2DDAF7-65C9-4F98-8F38-088F6590C113}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

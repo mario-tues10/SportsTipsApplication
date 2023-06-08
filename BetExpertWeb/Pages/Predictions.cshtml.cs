@@ -5,8 +5,7 @@ using Domain;
 using DataManagement;
 using Microsoft.AspNetCore.Authorization;
 using Domain.DVOs;
-using Domain.Interfaces;
-
+using Domain.Logic;
 namespace BetExpertWeb.Pages
 {
     [Authorize]

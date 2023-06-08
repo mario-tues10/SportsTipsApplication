@@ -1,5 +1,5 @@
 ﻿using Domain.Entities;
-using Domain;
+using Domain.Logic;
 using DataManagement;
 namespace BetExpertAdministration
 {

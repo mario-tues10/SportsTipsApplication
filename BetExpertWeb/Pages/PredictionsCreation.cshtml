@@ -33,11 +33,18 @@
                 <input asp-for="Prediction.Analysis" rows="5" class="form-control" />
                 <span asp-validation-for="Prediction.Analysis" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="Prediction.FinalPrediction">Final Prediction:</label>
                 <input asp-for="Prediction.FinalPrediction" class="form-control" />
                 <span asp-validation-for="Prediction.FinalPrediction" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Prediction.PredictionSport">Prediction sport:</label>
+                <select class="form-select" asp-for="Prediction.PredictionSport">
+                    <option value="Football" selected>Football</option>
+                    <option value="Tennis">Tennis</option>
+                    <option value="Basketball">Basketball</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary">Submit Prediction</button>
         </form>

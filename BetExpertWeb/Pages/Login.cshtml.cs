@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Domain.Entities;
 using DataManagement;
+using Domain.Logic;
 
 namespace BetExpertWeb.Pages
 {

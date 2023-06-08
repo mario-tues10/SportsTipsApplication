@@ -1,5 +1,5 @@
 using Domain.Entities;
-using Domain;
+using Domain.Logic;
 using DataManagement;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -25,7 +25,7 @@ namespace BetExpertWeb.Pages
             }
             catch(Exception) 
             {
-                ViewData["ErrorMessage"] = "No competition!";
+                Matches = null;
             }
         }
     }

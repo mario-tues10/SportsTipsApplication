@@ -1,9 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces;
-using System.Diagnostics;
-using System.Drawing;
-
-namespace Domain
+namespace Domain.Logic
 {
     public class AdminService
     {
@@ -54,6 +51,7 @@ namespace Domain
                 throw new Exception("Passwords don't match!");
             }
         }
+        // The non-trivial logic for desktop app + event handler invocation
         public void GetLastPredictionDays(Tipster tipster, int rowIndex)
         {
             LastPredictionDaysArgs args = new LastPredictionDaysArgs();

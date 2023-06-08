@@ -1,6 +1,6 @@
 ﻿using DataManagement;
 using Domain.Entities;
-using Domain;
+using Domain.Logic;
 namespace BetExpertAdministration
 {
     public partial class AdminPanel : Form
@@ -20,7 +20,8 @@ namespace BetExpertAdministration
             tipsterService = new TipsterService(new TipsterRepository());
             assignCompetition.Click += new EventHandler(OnAssingningCompetitions);
             adminService.LastPredictionDays += OnColorLastPredictionDays;
-            loggedUser.Text = $"Logged in as: " + loggedAdmin.Username;
+            loggedUser.Text = String.Concat("Logged in as: ", loggedAdmin.Username);
+            //loggedUser.Text = $ + loggedAdmin.Username;
         }
 
         private void OnAssingningCompetitions(object? sender, EventArgs? e)

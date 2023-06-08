@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces;
-namespace Domain
+namespace Domain.Logic
 {
     public class CompetitionService
     {

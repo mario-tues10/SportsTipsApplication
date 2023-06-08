@@ -32,7 +32,6 @@ else
                                     <input type="hidden" name="competitionId" value=@competition.GetId() />
                                     <button type="submit" value="@competition.GetId()">@competition.Name</button>
                                 </form>
-                                <br>
                             }
                         }
                     </ul>
@@ -58,7 +57,7 @@ else
                 <br>
                 <div class="grid-item">
                     <p class="sport_btn">BASKETBALL</p>
-                    <ul class="tennis_competitions">
+                    <ul class="basketball_competitions">
                         @foreach (var competition in Model.Competitions)
                         {
                             @if (competition.CompetitionSport.ToString().ToLower().Equals("basketball")

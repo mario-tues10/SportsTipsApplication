@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Domain.Entities;
 using Domain;
 using DataManagement;
+using Domain.Logic;
 namespace BetExpertWeb.Pages
 {
     [Authorize]

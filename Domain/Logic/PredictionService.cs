@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces;
-namespace Domain
+namespace Domain.Logic
 {
     public class PredictionService
     {
@@ -12,6 +12,15 @@ namespace Domain
         public void CreatePrediction(Prediction prediction)
         {
             predictionRepository.InsertIntoPrediction(prediction);
+        }
+        // Decides randomly for now if tipster's prediction is true or false.
+        public void DecidePrediction(Prediction prediction)
+        {
+            Random random = new Random();
+            int isGuessed = random.Next(0, 100);
+            if(isGuessed % 2 == 0) {
+                predictionRepository.UpdateAccuracy(prediction);
+            }
         }
         public void DeletePrediction(Prediction prediction) 
         { 
@@ -29,14 +38,12 @@ namespace Domain
         {
             return predictionRepository.GetMatchPredictions(match);
         }
-        public Tipster? GetCreator(Prediction prediction)
-        {
-            return predictionRepository.GetCreator(prediction);
-        }
+        /*
         public List<Prediction>? BestTipsterPredictions(Match match)
         {
             return predictionRepository.SortedPredictions(match);
         }
+        */
     }
 
 }

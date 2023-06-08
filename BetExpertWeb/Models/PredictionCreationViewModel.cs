@@ -15,5 +15,7 @@ namespace BetExpertWeb.Models
         [Required(ErrorMessage = "Please enter your final prediction.")]
         [MaxLength(50, ErrorMessage = "Your final prediction is too long.")]
         public string FinalPrediction { get; set; }
+        [Required(ErrorMessage = "Please fill the sport for this prediction.")]
+        public string PredictionSport { get; set; }
     }
 }

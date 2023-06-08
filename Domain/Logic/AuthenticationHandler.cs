@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces;
 using System.Text.RegularExpressions;
-namespace Domain
+namespace Domain.Logic
 {
     public class AuthenticationHandler
     {

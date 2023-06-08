@@ -1,7 +1,7 @@
 ﻿using Domain.DVOs;
 using Domain.Entities;
 using Domain.Interfaces;
-namespace Domain
+namespace Domain.Logic
 {
     public class ViewMapper
     {
@@ -20,11 +20,11 @@ namespace Domain
         {
             try
             {
-                List<Prediction>? Predictions = predictionRepository.SortedPredictions(match);
+                List<Prediction>? Predictions = predictionRepository.GetMatchPredictions(match);
                 List<PredictionDVO> mappedPredictions = new List<PredictionDVO>();
                 foreach(Prediction prediction in Predictions)
                 {
-                    Tipster? currentTipster = predictionRepository.GetCreator(prediction);
+                    Tipster? currentTipster = tipsterRepository.GetCreator(prediction);
                     mappedPredictions.Add(new PredictionDVO(currentTipster.Username, currentTipster.SuccessRate,
                         prediction.Analyse, prediction.FinalPrediction));
                 }
@@ -42,10 +42,13 @@ namespace Domain
             {
                 case "Client":
                     User? client = userRepository.GetAccountById(id);
-                    return new ProfileDVO(client.Username, client.Email, role, null);
+                    ProfileDVO? clientDVO = new ProfileDVO(client.Username, client.Email, role, null);
+                    return clientDVO;
                 case "Tipster":
                     Tipster? tipster = tipsterRepository.GetAccountById(id);
-                    return new ProfileDVO(tipster.Username, tipster.Email, role, tipster.SuccessRate);
+                    ProfileDVO? tipsterDVO = new ProfileDVO(tipster.Username, tipster.Email, role,
+                        tipster.SuccessRate);
+                    return tipsterDVO;
                 default: return null; 
             }
         }

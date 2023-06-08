@@ -1,0 +1,65 @@
+﻿@page
+@model BetExpertWeb.Pages.SuggestedTipstersModel
+@{
+    ViewData["Title"] = "Best tipsters";
+}
+<head>
+    <link rel="stylesheet" href="~/css/tipster.css" asp-append-version="true" />
+</head>
+
+<h1>Best tipsters</h1>
+@if (Model.BestTipsters == null)
+{
+    <div class="error-message">
+        There are no tipsters for now!
+    </div>
+}
+else
+{
+    <div id="container">
+        <div id="first">
+            <div class="grid-container">
+                <div class="grid-item">
+                    <p class="sport_btn">FOOTBALL</p>
+                    <ul class="football_tipsters">
+                        @foreach (var tipster in Model.BestTipsters[Domain.Entities.Sport.Football])
+                        {
+                            <li class="tipster">
+                                <p>@tipster.Username</p>
+                                <p>@tipster.SuccessRate</p>
+                            </li>
+                        }
+                            
+                    </ul>
+                </div>
+                <br>
+                <div class="grid-item">
+                    <p class="sport_btn">TENNIS</p>
+                    <ul class="tennis_tipsters">
+                        @foreach (var tipster in Model.BestTipsters[Domain.Entities.Sport.Tennis])
+                        {
+                            <li class="tipster">
+                                <p>@tipster.Username</p>
+                                <p>@tipster.SuccessRate</p>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <br>
+                <div class="grid-item">
+                    <p class="sport_btn">BASKETBALL</p>
+                    <ul class="basketball_tipsters">
+                        @foreach (var tipster in Model.BestTipsters[Domain.Entities.Sport.Basketball])
+                        {
+                            <li class="tipster">
+                                <p>@tipster.Username</p>
+                                <p>@tipster.SuccessRate</p>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

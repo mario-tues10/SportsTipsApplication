@@ -1,35 +1,17 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace ApplicationTest.Mocks
 {
-    /*
-    public class MockTipsterRepository : ITipsterRepository
+    public class MockTipsterRepository : MockUserRepository, ITipsterRepository
     {
-        public List<Tipster> Tipsters { get; private set; }
-        public MockTipsterRepository(List<Tipster> tipsters)
+        public List<Prediction>? TipsterPredictions { get; private set; }
+        public MockTipsterRepository(List<User> tipsters) : base(tipsters)
         {
-            Tipsters = tipsters;
+            TipsterPredictions = new List<Prediction>();
         }
-        public void InsertIntoAccount(Tipster tipster)
+        public new Tipster? GetAccountById(int id)
         {
-            Tipsters.Add(tipster);
-        }
-        public void DeleteIntoAccount(Tipster tipster)
-        {
-            Tipsters.Remove(tipster);
-        }
-        public void ChangePassword(Tipster tipster, string newPassword)
-        {
-            tipster.SetPassword(newPassword);
-        }
-        public Tipster GetAccountById(int id)
-        {
+            List<Tipster> Tipsters = Accounts.OfType<Tipster>().ToList();
             foreach (Tipster tipster in Tipsters)
             {
                 if (tipster.GetId() == id)
@@ -39,11 +21,30 @@ namespace ApplicationTest.Mocks
             }
             return null;
         }
-        public List<Tipster> GetAllAccounts()
+        public new List<Tipster> GetAllAccounts()
         {
+            List<Tipster> Tipsters = Accounts.OfType<Tipster>().ToList();
             return Tipsters;
         }
+        public void UpdateRate(Tipster tipster, decimal rate)
+        {
+            tipster.SuccessRate = rate;
+        }
+        public List<Prediction>? GetPredictions(Tipster? tipster)
+        {
+            return TipsterPredictions;
+        }
+        public Tipster? GetCreator(Prediction prediction)
+        {
+            foreach(User user in Accounts) 
+            {
+                if(user.GetId() == prediction.TipsterId)
+                {
+                    return (Tipster?)user;
+                }
+            }
+            return null;
+        }
     }
-    */
 
 }

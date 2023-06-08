@@ -4,26 +4,26 @@ namespace ApplicationTest.Mocks
 {
     public class MockUserRepository : IAccountRepository
     {
-        public List<User> Users { get; private set; }
+        public List<User> Accounts { get; private set; }
         public MockUserRepository(List<User> users)
         {
-            Users = users;
+            Accounts = users;
         }
         public void InsertIntoAccount(User user)
         {
-            Users.Add(user);
+            Accounts.Add(user);
         }
         public void DeleteIntoAccount(User user)
         {
-            Users.Remove(user);
+            Accounts.Remove(user);
         }
         public void ChangePassword(User user, string newPassword)
         {
             user.SetPassword(newPassword);
         }
-        public User GetAccountById(int id)
+        public User? GetAccountById(int id)
         {
-            foreach(User user in Users)
+            foreach(User user in Accounts)
             {
                 if(user.GetId() == id)
                 {
@@ -34,7 +34,7 @@ namespace ApplicationTest.Mocks
         }
         public List<User> GetAllAccounts()
         {
-            return Users;
+            return Accounts;
         }
     }
 }

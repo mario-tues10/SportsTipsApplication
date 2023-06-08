@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BetExpertWeb.Models;
 using Microsoft.AspNetCore.Authorization;
-using Domain;
 using DataManagement;
 using Domain.Entities;
+using Domain.Logic;
 namespace BetExpertWeb.Pages
 {
     [Authorize]
@@ -39,7 +39,8 @@ namespace BetExpertWeb.Pages
             if (ModelState.IsValid)
             {
                 Prediction? prediction = new Prediction(Prediction.Analysis,
-                    Prediction.FinalPrediction, DateTime.Now, matchId, Convert.ToInt32(User.FindFirst("id").Value));
+                    Prediction.FinalPrediction, DateTime.Now, false, Enum.Parse<Sport>(Prediction.PredictionSport),
+                    Convert.ToInt32(User.FindFirst("id").Value), matchId);
                 predictionService.CreatePrediction(prediction);
                 IsSubmitted = true;
 ;               return RedirectToPage("Competitions");

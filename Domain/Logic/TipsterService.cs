@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces;
-namespace Domain
+namespace Domain.Logic
 {
     public class TipsterService
     {
@@ -9,7 +9,7 @@ namespace Domain
         {
             this.tipsterRepository = tipsterRepository;
         }
-        public List<Prediction>? GetPredictions(Tipster tipster)
+        public List<Prediction>? GetTipsterPredictions(Tipster tipster)
         {
             return tipsterRepository.GetPredictions(tipster);
         }
@@ -62,6 +62,20 @@ namespace Domain
             {
                 throw new Exception("Passwords don't match!");
             }
+        }
+        public void CalculateSuccessRate(Tipster tipster)
+        {
+            List<Prediction>? Predictions = tipsterRepository.GetPredictions(tipster);
+            int guessedRight = 0;
+            foreach(Prediction prediction in Predictions)
+            {
+                if (prediction.Guessed)
+                {
+                    guessedRight++;
+                }
+            }
+            decimal successRate = guessedRight / Predictions.Count;
+            tipsterRepository.UpdateRate(tipster, successRate);
         }
     }
 }
