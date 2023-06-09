@@ -5,7 +5,7 @@ namespace DataManagement
 {
     public class UserRepository : IAccountRepository
     {
-        public readonly SqlService sqlService;
+        protected readonly SqlService sqlService;
         public UserRepository()
         {
             this.sqlService = new SqlService();

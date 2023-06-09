@@ -74,8 +74,15 @@ namespace Domain.Logic
                     guessedRight++;
                 }
             }
-            decimal successRate = guessedRight / Predictions.Count;
-            tipsterRepository.UpdateRate(tipster, successRate);
+            try
+            {
+                decimal successRate = guessedRight / Predictions.Count;
+                tipsterRepository.UpdateRate(tipster, successRate);
+            }
+            catch (Exception)
+            {
+                tipsterRepository.UpdateRate(tipster, 0);
+            }
         }
     }
 }

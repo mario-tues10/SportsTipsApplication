@@ -38,12 +38,6 @@ namespace Domain.Logic
         {
             return predictionRepository.GetMatchPredictions(match);
         }
-        /*
-        public List<Prediction>? BestTipsterPredictions(Match match)
-        {
-            return predictionRepository.SortedPredictions(match);
-        }
-        */
     }
 
 }

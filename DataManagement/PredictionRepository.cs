@@ -192,48 +192,6 @@ namespace DataManagement
             }
             return result;
         }
-        /*
-        public List<Prediction>? SortedPredictions(Match match)
-        {
-            List<Prediction>? result = new List<Prediction>();
-            using (SqlConnection sqlConnection = sqlService.CreateConnection())
-            {
-                string query = $"select * from [Prediction] " +
-                    $" inner join [Tipster] on [Prediction].tipster_id = [Tipster].tipster_id" +
-                    $" where match_id = @Id";
-                SqlCommand sqlCommand = new SqlCommand(query);
-                sqlCommand.Parameters.AddWithValue("@Id", match.GetId());
-                SqlDataReader? reader = sqlService.ReadFromTable(sqlCommand, sqlConnection);
-                try
-                {
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            int id = reader.GetInt32(0);
-                            string analyze = reader.GetString(1);
-                            string finalPrediction = reader.GetString(2);
-                            DateTime creationTime = reader.GetDateTime(3);
-                            bool guessed = Convert.ToBoolean(reader.GetByte(4));
-                            Sport sport = Enum.Parse<Sport>(reader.GetString(5));
-                            int matchId = reader.GetInt32(6);
-                            int tipsterId = reader.GetInt32(7);
-                            Prediction prediction = new Prediction(analyze, finalPrediction,
-                                creationTime, guessed, sport, tipsterId, matchId);
-                            prediction.SetId(id);
-                            result.Add(prediction);
-                        }
-
-                    }
-
-                }
-                catch (NullReferenceException)
-                {
-                    return null;
-                }
-            }
-            return result;
-        } 
-        */
+      
     }
 }
